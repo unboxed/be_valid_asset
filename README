@@ -1,0 +1,45 @@
+= be_valid_asset
+
+Provides be_valid_xhtml and (soon) be_valid_css matchers for rspec controller and view tests.
+
+== Installation
+
+To use rspec_hpricot_matchers in your project, install the plugin:
+
+  ./script/plugin install git://github.com/unboxed/be_valid_asset.git
+
+Add the following to your spec_helper.rb file:
+  
+  require 'be_valid_asset'
+
+== Usage
+
+It can be used to test either an ActionController Response object as follows:
+
+    describe FooController do
+      integrate_views
+
+      describe "GET 'index'" do
+        it "should have valid markup" do
+          get 'index'
+          response.should be_valid_xhtml
+        end
+      end
+    end
+
+or a string:
+
+    it "should be valid CSS" do
+      html = File.read(File.join(RAILS_ROOT, %w(public index.html)))
+      html.should be_valid_css
+    end
+
+== Notes
+
+This currently does not support validating html fragments (whole documents only). Will be in a future release.
+
+CSS validation will be in a future release.
+
+== Attribution
+
+This was originally based on a blog post here: http://www.anodyne.ca/2007/09/28/rspec-custom-matchers-and-be_valid_xhtml/
