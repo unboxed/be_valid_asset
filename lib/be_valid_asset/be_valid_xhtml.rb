@@ -1,6 +1,11 @@
 require 'net/http'
+require 'cgi'
 
 module BeValidAsset
+  
+  Configuration.markup_validator_host = 'validator.w3.org'
+  Configuration.markup_validator_path = '/check'
+
   class BeValidXhtml
   
     def initialize
@@ -16,17 +21,17 @@ module BeValidAsset
           
       return true if validity_checks_disabled?
 
-      if fragment.blank?
+      if fragment.empty?
         @message = "Response was blank (maybe a missing integrate_views)"
         return false
       end
 
-      response = http.start(BeValidAsset.markup_validator_host).post2(BeValidAsset.markup_validator_path, "fragment=#{CGI.escape(fragment)}&output=xml")
+      response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, "fragment=#{CGI.escape(fragment)}&output=xml")
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
       unless markup_is_valid
-        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if BeValidAsset.display_invalid_content
+        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
         @message << XmlSimple.xml_in(response.body)['messages'][0]['msg'].collect{ |m| "Invalid markup: line #{m['line']}: #{CGI.unescapeHTML(m['content'])}" }.join("\n")
       end
       if markup_is_valid
@@ -61,5 +66,9 @@ module BeValidAsset
         end
       end
   
+  end
+
+  def be_valid_xhtml
+    BeValidXhtml.new
   end
 end
