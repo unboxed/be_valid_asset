@@ -20,27 +20,8 @@ module BeValidAsset
     #     assert_valid_markup
     #   end
     #
-    MARKUP_VALIDATOR_HOST = ENV['MARKUP_VALIDATOR_HOST'] || 'validator.w3.org'
-    MARKUP_VALIDATOR_PATH = ENV['MARKUP_VALIDATOR_PATH'] || '/check'
-    CSS_VALIDATOR_HOST = ENV['CSS_VALIDATOR_HOST'] || 'jigsaw.w3.org'
-    CSS_VALIDATOR_PATH = ENV['CSS_VALIDATOR_PATH'] || '/css-validator/validator'
-  
-    @@display_invalid_content = false
-    cattr_accessor :display_invalid_content
-
-    @@auto_validate = false
-    cattr_accessor :auto_validate
-
-    class_inheritable_accessor :auto_validate_excludes
-    class_inheritable_accessor :auto_validate_includes
-  
   
     def matches?(response)
-      if response.respond_to?(:rendered_file)
-        fn = response.rendered_file
-      else
-        fn = response.rendered_template.to_s
-      end
       fragment = response.body
     
       return true if validity_checks_disabled?
@@ -50,12 +31,12 @@ module BeValidAsset
         return false
       end
 
-      response = http.start(MARKUP_VALIDATOR_HOST).post2(MARKUP_VALIDATOR_PATH, "fragment=#{CGI.escape(fragment)}&output=xml")
+      response = http.start(BeValidAsset.markup_validator_host).post2(BeValidAsset.markup_validator_path, "fragment=#{CGI.escape(fragment)}&output=xml")
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
       unless markup_is_valid
-        fragment.split($/).each_with_index{|line, index| message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if @@display_invalid_content
+        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if BeValidAsset.display_invalid_content
         @message << XmlSimple.xml_in(response.body)['messages'][0]['msg'].collect{ |m| "Invalid markup: line #{m['line']}: #{CGI.unescapeHTML(m['content'])}" }.join("\n")
       end
       if markup_is_valid
@@ -70,7 +51,7 @@ module BeValidAsset
     end
   
     def failure_message
-     " expected xhtml to be valid, but validation produced these errors:\n #{@message}"
+     " expected xhtml to be valid, but validation produced these errors:\n#{@message}"
     end
   
     def negative_failure_message
