@@ -10,7 +10,7 @@ module BeValidAsset
   
     def matches?(fragment)
       
-      if fragment.is_a? ActionController::AbstractResponse
+      if fragment.respond_to? :body
         fragment = fragment.body
       end
           
