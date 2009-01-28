@@ -1,3 +1,4 @@
+require 'spec/rails'
 require 'be_valid_asset/be_valid_xhtml'
 # require 'be_valid_asset/be_valid_css'
 
