@@ -1,5 +1,5 @@
 require 'be_valid_asset/be_valid_xhtml'
-# require 'be_valid_asset/be_valid_css'
+require 'be_valid_asset/be_valid_css'
 
 module BeValidAsset
   @@markup_validator_host = 'validator.w3.org'
@@ -19,7 +19,7 @@ Spec::Rails::Matchers.module_eval do
     BeValidAsset::BeValidXhtml.new
   end
 
-  # def be_valid_css
-  #   BeValidAsset::BeValidCss.new
-  # end
+  def be_valid_css
+    BeValidAsset::BeValidCss.new
+  end
 end
