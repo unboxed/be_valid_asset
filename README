@@ -29,9 +29,9 @@ It can be used to test either an ActionController Response object as follows:
 
 or a string:
 
-    it "should be valid CSS" do
+    it "should be valid xhtml" do
       html = File.read(File.join(RAILS_ROOT, %w(public index.html)))
-      html.should be_valid_css
+      html.should be_valid_xhtml
     end
 
 == Notes
