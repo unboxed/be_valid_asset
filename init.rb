@@ -1,0 +1,1 @@
+# Blank file to keep Rails happy
