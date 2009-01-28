@@ -34,6 +34,10 @@ or a string:
       html.should be_valid_xhtml
     end
 
+== Configuration
+
+TODO: Configuration details
+
 == Notes
 
 This currently does not support validating html fragments (whole documents only). Will be in a future release.
