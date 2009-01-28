@@ -7,23 +7,13 @@ module BeValidAsset
     end
   
     # Assert that markup (html/xhtml) is valid according the W3C validator web service.
-    # By default, it validates the contents of @response.body, which is set after calling
-    # one of the get/post/etc helper methods. You can also pass it a string to be validated.
-    # Validation errors, if any, will be included in the output. The input fragment and 
-    # response from the validator service will be cached in the $RAILS_ROOT/tmp directory to 
-    # minimize network calls.
-    #
-    # For example, if you have a FooController with an action Bar, put this in foo_controller_test.rb:
-    #
-    #   def test_bar_valid_markup
-    #     get :bar
-    #     assert_valid_markup
-    #   end
-    #
   
-    def matches?(response)
-      fragment = response.body
-    
+    def matches?(fragment)
+      
+      if fragment.is_a? ActionController::AbstractResponse
+        fragment = fragment.body
+      end
+          
       return true if validity_checks_disabled?
 
       if fragment.blank?
