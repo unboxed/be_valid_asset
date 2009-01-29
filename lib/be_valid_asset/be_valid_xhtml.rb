@@ -1,6 +1,6 @@
 require 'net/http'
 require 'cgi'
-require 'xmlsimple'
+require 'rexml/document'
 
 module BeValidAsset
   
@@ -27,13 +27,16 @@ module BeValidAsset
         return false
       end
 
-      response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, "fragment=#{CGI.escape(fragment)}&output=xml")
+      response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, 
+                                                                      "fragment=#{CGI.escape(fragment)}&output=xml")
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
       unless markup_is_valid
         fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
-        @message << XmlSimple.xml_in(response.body)['messages'][0]['msg'].collect{ |m| "Invalid markup: line #{m['line']}: #{CGI.unescapeHTML(m['content'])}" }.join("\n")
+        REXML::Document.new(response.body).root.each_element('*/msg') do |m| 
+          @message << "Invalid markup: line #{m.attributes['line']}: #{CGI.unescapeHTML(m.text)}\n"
+        end
       end
       if markup_is_valid
         return true

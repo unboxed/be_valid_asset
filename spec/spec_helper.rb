@@ -1,6 +1,5 @@
 $: << File.join(File.dirname(__FILE__), %w(.. lib))
 
-require 'rubygems'
 require 'be_valid_asset'
 
 Spec::Runner.configure do |config|

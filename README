@@ -4,8 +4,6 @@ Provides be_valid_xhtml and (soon) be_valid_css matchers for rspec controller an
 
 == Installation
 
-Make sure the xml-simple gem is installed.
-
 To use rspec_hpricot_matchers in your project, install the plugin:
 
   ./script/plugin install git://github.com/unboxed/be_valid_asset.git
