@@ -1,5 +1,6 @@
 require 'net/http'
 require 'cgi'
+require 'xmlsimple'
 
 module BeValidAsset
   
