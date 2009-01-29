@@ -9,7 +9,8 @@ module BeValidAsset
 
   class BeValidXhtml
   
-    def initialize
+    def initialize(options = {})
+      @fragment = options[:fragment]
     end
   
     # Assert that markup (html/xhtml) is valid according the W3C validator web service.
@@ -27,8 +28,11 @@ module BeValidAsset
         return false
       end
 
-      response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, 
-                                                                      "fragment=#{CGI.escape(fragment)}&output=xml")
+      query_string = "fragment=#{CGI.escape(fragment)}&output=xml"
+      if @fragment
+        query_string << '&prefill=1&prefill_doctype=xhtml10'
+      end
+      response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
@@ -74,5 +78,9 @@ module BeValidAsset
 
   def be_valid_xhtml
     BeValidXhtml.new
+  end
+  
+  def be_valid_xhtml_fragment()
+    BeValidXhtml.new(:fragment => true)
   end
 end
