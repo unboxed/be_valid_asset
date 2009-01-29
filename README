@@ -4,6 +4,8 @@ Provides be_valid_xhtml and (soon) be_valid_css matchers for rspec controller an
 
 == Installation
 
+Make sure the xml-simple gem is installed.
+
 To use rspec_hpricot_matchers in your project, install the plugin:
 
   ./script/plugin install git://github.com/unboxed/be_valid_asset.git
@@ -36,13 +38,23 @@ or a string:
 
 == Configuration
 
-TODO: Configuration details
+There are a few configuration options that can be configured in spec_helper.rb as follows:
 
-== Notes
+Display Full HTML for failures:
+BeValidAsset::Configuration.display_invalid_content = false (default)
 
-This currently does not support validating html fragments (whole documents only). Will be in a future release.
+Change validator host/path:
+BeValidAsset::Configuration.markup_validator_host = 'validator.w3.org'
+BeValidAsset::Configuration.markup_validator_path = '/check'
 
-CSS validation will be in a future release.
+If you are doing more than the occasional check, you should probably run your own copy of the validator, and use that.
+Instructions here: http://validator.w3.org/docs/install.html
+
+== Future Stuff
+
+* html fragments validation
+* CSS validation
+* caching of results
 
 == Attribution
 
