@@ -9,8 +9,8 @@ Spec::Runner.configure do |config|
 end
 
 def get_file(name)
-  dir = File.join(File.dirname(__FILE__), 'files')
-  File.read(File.join(dir, name))
+  filename = File.join(File.dirname(__FILE__), 'files', name)
+  File.read(filename)
 end
 
 class MockResponse
