@@ -4,13 +4,13 @@ Provides be_valid_xhtml and (soon) be_valid_css matchers for rspec controller an
 
 == Installation
 
-To use rspec_hpricot_matchers in your project, install the plugin:
+To use be_valid_asset in your project, install the plugin:
 
   ./script/plugin install git://github.com/unboxed/be_valid_asset.git
 
-Add the following to your spec_helper.rb file:
+Add the following to the configure block in your spec_helper.rb file:
   
-  require 'be_valid_asset'
+  config.include BeValidAsset
 
 == Usage
 
