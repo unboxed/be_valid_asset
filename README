@@ -48,11 +48,18 @@ BeValidAsset::Configuration.markup_validator_path = '/check'
 If you are doing more than the occasional check, you should probably run your own copy of the validator, and use that.
 Instructions here: http://validator.w3.org/docs/install.html
 
+* Caching
+
+be_valid_asset can cache the responses from the validator to save look-ups for documents that haven't changed.
+To use this feature, it must be enabled, and a cache path must be set:
+
+BeValidAsset::Configuration.enable_caching = true
+BeValidAsset::Configuration.cache_path = File.join(RAILS_ROOT, %w(tmp be_valid_asset_cache))
+
 == Future Stuff
 
 * html fragments validation
 * CSS validation
-* caching of results
 
 == Attribution
 
