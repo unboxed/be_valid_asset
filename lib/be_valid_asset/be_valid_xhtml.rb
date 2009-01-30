@@ -1,43 +1,44 @@
 require 'net/http'
+require 'fileutils'
+require 'cgi'
+require 'digest/md5'
+require 'rexml/document'
 
 module BeValidAsset
+  
+  Configuration.markup_validator_host = 'validator.w3.org'
+  Configuration.markup_validator_path = '/check'
+
   class BeValidXhtml
   
-    def initialize
+    def initialize(options = {})
+      @fragment = options[:fragment]
     end
   
     # Assert that markup (html/xhtml) is valid according the W3C validator web service.
-    # By default, it validates the contents of @response.body, which is set after calling
-    # one of the get/post/etc helper methods. You can also pass it a string to be validated.
-    # Validation errors, if any, will be included in the output. The input fragment and 
-    # response from the validator service will be cached in the $RAILS_ROOT/tmp directory to 
-    # minimize network calls.
-    #
-    # For example, if you have a FooController with an action Bar, put this in foo_controller_test.rb:
-    #
-    #   def test_bar_valid_markup
-    #     get :bar
-    #     assert_valid_markup
-    #   end
-    #
   
-    def matches?(response)
-      fragment = response.body
-    
+    def matches?(fragment)
+      
+      if fragment.respond_to? :body
+        fragment = fragment.body
+      end
+          
       return true if validity_checks_disabled?
 
-      if fragment.blank?
+      if fragment.empty?
         @message = "Response was blank (maybe a missing integrate_views)"
         return false
       end
 
-      response = http.start(BeValidAsset.markup_validator_host).post2(BeValidAsset.markup_validator_path, "fragment=#{CGI.escape(fragment)}&output=xml")
+      response = get_validator_response(fragment)
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
       unless markup_is_valid
-        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if BeValidAsset.display_invalid_content
-        @message << XmlSimple.xml_in(response.body)['messages'][0]['msg'].collect{ |m| "Invalid markup: line #{m['line']}: #{CGI.unescapeHTML(m['content'])}" }.join("\n")
+        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
+        REXML::Document.new(response.body).root.each_element('*/msg') do |m| 
+          @message << "Invalid markup: line #{m.attributes['line']}: #{CGI.unescapeHTML(m.text)}\n"
+        end
       end
       if markup_is_valid
         return true
@@ -63,13 +64,36 @@ module BeValidAsset
         ENV["NONET"] == 'true'
       end
 
-      def http
-        if Module.constants.include?("ApplicationConfig") && ApplicationConfig.respond_to?(:proxy_config)
-          Net::HTTP::Proxy(ApplicationConfig.proxy_config['host'], ApplicationConfig.proxy_config['port'])
-        else
-          Net::HTTP
+      def get_validator_response(fragment)
+        query_string = "fragment=#{CGI.escape(fragment)}&output=xml"
+        if @fragment
+          query_string << '&prefill=1&prefill_doctype=xhtml10'
         end
+        if Configuration.enable_caching
+          unless File.directory? Configuration.cache_path
+            FileUtils.mkdir_p Configuration.cache_path
+          end
+          digest = Digest::MD5.hexdigest(query_string)
+          cache_filename = File.join(Configuration.cache_path, digest)
+          if File.exist? cache_filename
+            response = File.open(cache_filename) {|f| Marshal.load(f) }
+          else
+            response = Net::HTTP.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
+            File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) }
+          end
+        else
+          response = Net::HTTP.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
+        end
+        return response
       end
+
+  end
+
+  def be_valid_xhtml
+    BeValidXhtml.new
+  end
   
+  def be_valid_xhtml_fragment()
+    BeValidXhtml.new(:fragment => true)
   end
 end

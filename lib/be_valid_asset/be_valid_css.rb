@@ -92,4 +92,8 @@ module BeValidAsset
       end
   
   end
+  
+  def be_valid_css
+    BeValidCss.new
+  end
 end
