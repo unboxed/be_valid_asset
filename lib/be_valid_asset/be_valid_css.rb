@@ -1,6 +1,10 @@
 require 'net/http'
 
 module BeValidAsset
+
+  Configuration.css_validator_host = 'validator.w3.org'
+  Configuration.css_validator_path = '/check'
+
   class BeValidCss
   
     def initialize
@@ -40,14 +44,14 @@ module BeValidAsset
       boundary = '-----------------------------24464570528145'
       query = params.collect { |p| '--' + boundary + "\r\n" + p }.join('') + '--' + boundary + "--\r\n"
       
-      response = http.start(BeValidAsset.css_validator_host).post2(BeValidAsset.css_validator_path, query, "Content-type" => "multipart/form-data; boundary=" + boundary)
+      response = Net::HTTP.start(Configuration.css_validator_host).post2(Configuration.css_validator_path, query, "Content-type" => "multipart/form-data; boundary=" + boundary)
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
       
       puts response.body
       unless markup_is_valid
-        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if BeValidAsset.display_invalid_content
+        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
         @message << XmlSimple.xml_in(response.body)['messages'][0]['msg'].collect{ |m| "Invalid markup: line #{m['line']}: #{CGI.unescapeHTML(m['content'])}" }.join("\n")
       end
       if markup_is_valid
@@ -74,14 +78,6 @@ module BeValidAsset
         ENV["NONET"] == 'true'
       end
 
-      def http
-        if Module.constants.include?("ApplicationConfig") && ApplicationConfig.respond_to?(:proxy_config)
-          Net::HTTP::Proxy(ApplicationConfig.proxy_config['host'], ApplicationConfig.proxy_config['port'])
-        else
-          Net::HTTP
-        end
-      end
-      
       def text_to_multipart(key,value)
         return "Content-Disposition: form-data; name=\"#{CGI::escape(key)}\"\r\n\r\n#{value}\r\n"
       end
