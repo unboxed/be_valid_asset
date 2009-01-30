@@ -30,12 +30,7 @@ module BeValidAsset
         return false
       end
 
-      query_string = "fragment=#{CGI.escape(fragment)}&output=xml"
-      if @fragment
-        query_string << '&prefill=1&prefill_doctype=xhtml10'
-      end
-
-      response = get_validator_response(query_string)
+      response = get_validator_response(fragment)
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
@@ -69,7 +64,11 @@ module BeValidAsset
         ENV["NONET"] == 'true'
       end
 
-      def get_validator_response(query_string)
+      def get_validator_response(fragment)
+        query_string = "fragment=#{CGI.escape(fragment)}&output=xml"
+        if @fragment
+          query_string << '&prefill=1&prefill_doctype=xhtml10'
+        end
         if Configuration.enable_caching
           unless File.directory? Configuration.cache_path
             FileUtils.mkdir_p Configuration.cache_path
@@ -79,23 +78,15 @@ module BeValidAsset
           if File.exist? cache_filename
             response = File.open(cache_filename) {|f| Marshal.load(f) }
           else
-            response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
+            response = Net::HTTP.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
             File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) }
           end
         else
-          response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
+          response = Net::HTTP.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
         end
         return response
       end
 
-      def http
-        if Module.constants.include?("ApplicationConfig") && ApplicationConfig.respond_to?(:proxy_config)
-          Net::HTTP::Proxy(ApplicationConfig.proxy_config['host'], ApplicationConfig.proxy_config['port'])
-        else
-          Net::HTTP
-        end
-      end
-  
   end
 
   def be_valid_xhtml
