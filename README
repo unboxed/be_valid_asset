@@ -67,6 +67,8 @@ BeValidAsset::Configuration.cache_path = File.join(RAILS_ROOT, %w(tmp be_valid_a
 
 * CSS validation
 
-== Attribution
+== Licensing etc.
 
 This was originally based on a blog post here: http://www.anodyne.ca/2007/09/28/rspec-custom-matchers-and-be_valid_xhtml/
+
+This is distributed under the MIT Licence, see MIT-LICENSE.txt for the details
