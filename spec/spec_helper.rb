@@ -4,6 +4,8 @@ require 'be_valid_asset'
 
 Spec::Runner.configure do |config|
   config.include BeValidAsset
+  
+  BeValidAsset::Configuration.cache_path = File.join(File.dirname(__FILE__), 'tmp')
 end
 
 def get_file(name)

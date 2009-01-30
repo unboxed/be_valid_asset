@@ -1,5 +1,7 @@
 require 'net/http'
+require 'fileutils'
 require 'cgi'
+require 'digest/md5'
 require 'rexml/document'
 
 module BeValidAsset
@@ -32,7 +34,8 @@ module BeValidAsset
       if @fragment
         query_string << '&prefill=1&prefill_doctype=xhtml10'
       end
-      response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
+
+      response = get_validator_response(query_string)
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
@@ -64,6 +67,25 @@ module BeValidAsset
     private
       def validity_checks_disabled?
         ENV["NONET"] == 'true'
+      end
+
+      def get_validator_response(query_string)
+        if Configuration.enable_caching
+          unless File.directory? Configuration.cache_path
+            FileUtils.mkdir_p Configuration.cache_path
+          end
+          digest = Digest::MD5.hexdigest(query_string)
+          cache_filename = File.join(Configuration.cache_path, digest)
+          if File.exist? cache_filename
+            response = File.open(cache_filename) {|f| Marshal.load(f) }
+          else
+            response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
+            File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) }
+          end
+        else
+          response = http.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
+        end
+        return response
       end
 
       def http
