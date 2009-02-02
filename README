@@ -52,6 +52,10 @@ CSS files can be validated as follows:
       css.should be_valid_css
     end
 
+=== Disabling network tests
+
+If the environment variable NONET is set to true, then all tests with no cached response available will be marked as pending.
+
 == Configuration
 
 There are a few configuration options that can be configured in spec_helper.rb as follows:
