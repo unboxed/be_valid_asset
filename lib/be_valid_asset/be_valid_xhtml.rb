@@ -19,8 +19,6 @@ module BeValidAsset
   
     def matches?(fragment)
 
-      check_net_enabled
-      
       if fragment.respond_to? :body
         fragment = fragment.body
       end

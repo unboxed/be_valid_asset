@@ -117,5 +117,28 @@ describe 'be_valid_xhtml' do
       }.should raise_error
       Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size.should eql(count)
     end
+
+    it "should use the cached result (if available) when network tests disabled" do
+      html = get_file('valid.html')
+      html.should be_valid_xhtml
+
+      ENV['NONET'] = 'true'
+
+      Net::HTTP.should_not_receive(:start)
+      html.should be_valid_xhtml
+
+      ENV.delete('NONET')
+    end
+
+    it "should mark test as pending if network tests are disabled, and no cached result is available" do
+      ENV['NONET'] = 'true'
+
+      html = get_file('valid.html')
+      lambda {
+        html.should be_valid_xhtml
+      }.should raise_error(Spec::Example::ExamplePendingError)
+
+      ENV.delete('NONET')
+    end
   end
 end

@@ -101,5 +101,28 @@ describe 'be_valid_css' do
       }.should raise_error
       Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size.should eql(count)
     end
+
+    it "should use the cached result (if available) when network tests disabled" do
+      css = get_file('valid.css')
+      css.should be_valid_css
+
+      ENV['NONET'] = 'true'
+
+      Net::HTTP.should_not_receive(:start)
+      css.should be_valid_css
+
+      ENV.delete('NONET')
+    end
+
+    it "should mark test as pending if network tests are disabled, and no cached result is available" do
+      ENV['NONET'] = 'true'
+
+      css = get_file('valid.css')
+      lambda {
+        css.should be_valid_css
+      }.should raise_error(Spec::Example::ExamplePendingError)
+
+      ENV.delete('NONET')
+    end
   end
 end

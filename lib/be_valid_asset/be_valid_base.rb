@@ -35,6 +35,7 @@ module BeValidAsset
       end
 
       def call_validator(data, headers = {})
+        check_net_enabled
         return Net::HTTP.start(validator_host).post2(validator_path, data, headers )
       end
 

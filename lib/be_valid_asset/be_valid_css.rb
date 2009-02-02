@@ -12,8 +12,6 @@ module BeValidAsset
   
     def matches?(fragment)
 
-      check_net_enabled
-
       if fragment.empty?
         @message = "Response was blank (maybe a missing integrate_views)"
         return false
