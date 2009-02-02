@@ -30,6 +30,19 @@ describe 'be_valid_xhtml' do
         response.should be_valid_xhtml
       }.should raise_error(SpecFailed, /expected xhtml to be valid, but validation produced these errors/)    
     end
+
+    it "should fail unless resposne is HTTP OK" do
+      html = get_file('valid.html')
+
+      r = Net::HTTPServiceUnavailable.new('1.1', 503, 'Service Unavailable')
+      h = Net::HTTP.new(BeValidAsset::Configuration.markup_validator_host)
+      h.stub!(:post2).and_return(r)
+      Net::HTTP.stub!(:start).and_return(h)
+
+      lambda {
+        html.should be_valid_xhtml
+      }.should raise_error
+    end
   end
   
   describe "with caching" do
@@ -73,6 +86,21 @@ describe 'be_valid_xhtml' do
       lambda {
         response.should be_valid_xhtml
       }.should raise_error(SpecFailed, /expected xhtml to be valid, but validation produced these errors/)
+    end
+
+    it "should not cache the result unless it is an HTTP OK response" do
+      html = get_file('valid.html')
+      count = Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size
+
+      r = Net::HTTPServiceUnavailable.new('1.1', 503, 'Service Unavailable')
+      h = Net::HTTP.new(BeValidAsset::Configuration.markup_validator_host)
+      h.stub!(:post2).and_return(r)
+      Net::HTTP.stub!(:start).and_return(h)
+
+      lambda {
+        html.should be_valid_xhtml
+      }.should raise_error
+      Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size.should eql(count)
     end
   end
 end

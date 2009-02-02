@@ -79,11 +79,12 @@ module BeValidAsset
             response = File.open(cache_filename) {|f| Marshal.load(f) }
           else
             response = Net::HTTP.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
-            File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) }
+            File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) } if response.is_a? Net::HTTPSuccess
           end
         else
           response = Net::HTTP.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
         end
+        raise "HTTP error: #{response.code}" unless response.is_a? Net::HTTPSuccess
         return response
       end
 
