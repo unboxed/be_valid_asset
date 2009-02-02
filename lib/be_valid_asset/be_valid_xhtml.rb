@@ -60,8 +60,13 @@ module BeValidAsset
     end
   
     private
-      def validity_checks_disabled?
-        ENV["NONET"] == 'true'
+
+      def validator_host
+        Configuration.markup_validator_host
+      end
+
+      def validator_path
+        Configuration.markup_validator_path
       end
 
       def get_validator_response(fragment)
@@ -78,11 +83,11 @@ module BeValidAsset
           if File.exist? cache_filename
             response = File.open(cache_filename) {|f| Marshal.load(f) }
           else
-            response = Net::HTTP.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
+            response = call_validator( query_string )
             File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) } if response.is_a? Net::HTTPSuccess
           end
         else
-          response = Net::HTTP.start(Configuration.markup_validator_host).post2(Configuration.markup_validator_path, query_string )
+          response = call_validator( query_string )
         end
         raise "HTTP error: #{response.code}" unless response.is_a? Net::HTTPSuccess
         return response
