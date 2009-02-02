@@ -35,6 +35,13 @@ describe 'be_valid_xhtml' do
       }.should raise_error(SpecFailed, /expected xhtml to be valid, but validation produced these errors/)    
     end
 
+    it "should fail when passed a response with a blank body" do
+      response = MockResponse.new('')
+      lambda {
+        response.should be_valid_xhtml
+      }.should raise_error(SpecFailed)
+    end
+
     it "should fail unless resposne is HTTP OK" do
       html = get_file('valid.html')
 
@@ -48,7 +55,7 @@ describe 'be_valid_xhtml' do
       }.should raise_error
     end
 
-    it "should mark test as pending if ENV['NONET'] is true" do
+    it "should mark test as pending if network tests are disabled" do
       ENV['NONET'] = 'true'
 
       html = get_file('valid.html')
