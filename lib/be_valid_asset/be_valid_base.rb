@@ -30,9 +30,6 @@ module BeValidAsset
         boundary = Digest::MD5.hexdigest(Time.now.to_s)
         data = encode_multipart_params(boundary, params)
         if Configuration.enable_caching
-          unless File.directory? Configuration.cache_path
-            FileUtils.mkdir_p Configuration.cache_path
-          end
           digest = Digest::MD5.hexdigest(params.to_s)
           cache_filename = File.join(Configuration.cache_path, digest)
           if File.exist? cache_filename

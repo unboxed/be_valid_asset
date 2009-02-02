@@ -14,6 +14,14 @@ module BeValidAsset
         super
       end
     end
+
+    def self.cache_path=(path)
+      @@config[:cache_path] = path
+      unless File.directory? path
+        FileUtils.mkdir_p path
+      end
+
+    end
   end
 end
 
