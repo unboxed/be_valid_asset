@@ -1,6 +1,6 @@
 = be_valid_asset
 
-Provides be_valid_xhtml and (soon) be_valid_css matchers for rspec controller and view tests.
+Provides be_valid_xhtml and be_valid_css matchers for rspec controller and view tests.
 
 == Installation
 
@@ -13,6 +13,8 @@ Add the following to the configure block in your spec_helper.rb file:
   config.include BeValidAsset
 
 == Usage
+
+=== (X)HTML validation
 
 It can be used to test either an ActionController Response object as follows:
 
@@ -41,6 +43,15 @@ It is also possible to validate an xhtml fragment.  This assumes xhtml-1.0 stric
       string.should be_valid_xhtml_fragment
     end
 
+=== CSS validation
+
+CSS files can be validated as follows:
+
+    it "should be valid CSS" do
+      css = File.read(File.join(RAILS_ROOT, %w(public stylesheets main.css)))
+      css.should be_valid_css
+    end
+
 == Configuration
 
 There are a few configuration options that can be configured in spec_helper.rb as follows:
@@ -49,11 +60,15 @@ Display Full HTML for failures:
 BeValidAsset::Configuration.display_invalid_content = false (default)
 
 Change validator host/path:
+
 BeValidAsset::Configuration.markup_validator_host = 'validator.w3.org'
 BeValidAsset::Configuration.markup_validator_path = '/check'
+BeValidAsset::Configuration.css_validator_host = 'jigsaw.w3.org'
+BeValidAsset::Configuration.css_validator_path = '/css-validator/validator'
+
 
 If you are doing more than the occasional check, you should probably run your own copy of the validator, and use that.
-Instructions here: http://validator.w3.org/docs/install.html
+Instructions here: http://validator.w3.org/docs/install.html or http://jigsaw.w3.org/css-validator/DOWNLOAD.html
 
 * Caching
 
@@ -62,10 +77,6 @@ To use this feature, it must be enabled, and a cache path must be set:
 
 BeValidAsset::Configuration.enable_caching = true
 BeValidAsset::Configuration.cache_path = File.join(RAILS_ROOT, %w(tmp be_valid_asset_cache))
-
-== Future Stuff
-
-* CSS validation
 
 == Licensing etc.
 
