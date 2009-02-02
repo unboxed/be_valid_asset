@@ -36,8 +36,8 @@ module BeValidAsset
       @message = ''
       unless markup_is_valid
         fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
-        REXML::Document.new(response.body).root.each_element('*/msg') do |m| 
-          @message << "Invalid markup: line #{m.attributes['line']}: #{m.get_text.value}\n"
+        REXML::Document.new(response.body).root.each_element('//m:error') do |e|
+          @message << "Invalid markup: line #{e.elements['m:line'].text}: #{e.elements['m:message'].get_text.value.strip}\n"
         end
       end
       if markup_is_valid
@@ -70,24 +70,30 @@ module BeValidAsset
       end
 
       def get_validator_response(fragment)
-        query_string = "fragment=#{CGI.escape(fragment)}&output=xml"
+        boundary = Digest::MD5.hexdigest(Time.now.to_s)
         if @fragment
-          query_string << '&prefill=1&prefill_doctype=xhtml10'
+          data = encode_multipart_params(boundary, :fragment => fragment, :output => 'soap12', :prefill => '1', :prefill_doctype => 'xhtml10')
+        else
+          data = encode_multipart_params(boundary, :fragment => fragment, :output => 'soap12')
         end
+#        query_string = "fragment=#{CGI.escape(fragment)}&output=soap12"
+#        if @fragment
+#          query_string << '&prefill=1&prefill_doctype=xhtml10'
+#        end
         if Configuration.enable_caching
           unless File.directory? Configuration.cache_path
             FileUtils.mkdir_p Configuration.cache_path
           end
-          digest = Digest::MD5.hexdigest(query_string)
+          digest = Digest::MD5.hexdigest(fragment)
           cache_filename = File.join(Configuration.cache_path, digest)
           if File.exist? cache_filename
             response = File.open(cache_filename) {|f| Marshal.load(f) }
           else
-            response = call_validator( query_string )
+            response = call_validator( data, "Content-type" => "multipart/form-data; boundary=#{boundary}" )
             File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) } if response.is_a? Net::HTTPSuccess
           end
         else
-          response = call_validator( query_string )
+          response = call_validator( data, "Content-type" => "multipart/form-data; boundary=#{boundary}")
         end
         raise "HTTP error: #{response.code}" unless response.is_a? Net::HTTPSuccess
         return response

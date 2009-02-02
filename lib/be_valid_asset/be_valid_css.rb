@@ -5,14 +5,14 @@ module BeValidAsset
   Configuration.css_validator_host = 'jigsaw.w3.org'
   Configuration.css_validator_path = '/css-validator/validator'
 
-  class BeValidCss
+  class BeValidCss < BeValidBase
   
     def initialize
     end
   
     def matches?(fragment)
 
-      return true if validity_checks_disabled?
+      check_net_enabled
 
       if fragment.empty?
         @message = "Response was blank (maybe a missing integrate_views)"
@@ -46,8 +46,13 @@ module BeValidAsset
     end
   
     private
-      def validity_checks_disabled?
-        ENV["NONET"] == 'true'
+
+      def validator_host
+        Configuration.markup_validator_host
+      end
+
+      def validator_path
+        Configuration.markup_validator_path
       end
 
       def get_validator_response(fragment)
@@ -71,19 +76,6 @@ module BeValidAsset
           response = Net::HTTP.start(Configuration.css_validator_host).post2(Configuration.css_validator_path, data, "Content-type" => "multipart/form-data; boundary=#{boundary}")
         end
         return response
-      end
-
-      def encode_multipart_params(boundary, params = {})
-        ret = ''
-        params.each do |k,v|
-          unless v.empty?
-            ret << "\r\n--#{boundary}\r\n"
-            ret << "Content-Disposition: form-data; name=\"#{k.to_s}\"\r\n\r\n"
-            ret << v
-          end
-        end
-        ret << "\r\n--#{boundary}--\r\n"
-        ret
       end
   
   end

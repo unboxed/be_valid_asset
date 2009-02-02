@@ -16,6 +16,10 @@ describe 'be_valid_xhtml' do
       response = MockResponse.new(get_file('valid.html'))
       response.should be_valid_xhtml
     end
+
+    it "should validate a valid fragment" do
+      "<p>This is a Fragment</p>".should be_valid_xhtml_fragment
+    end
   
     it "should not validate an invalid string" do
       html = get_file('invalid.html')
