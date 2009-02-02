@@ -37,7 +37,7 @@ module BeValidAsset
       unless markup_is_valid
         fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
         REXML::Document.new(response.body).root.each_element('*/msg') do |m| 
-          @message << "Invalid markup: line #{m.attributes['line']}: #{CGI.unescapeHTML(m.text)}\n"
+          @message << "Invalid markup: line #{m.attributes['line']}: #{m.get_text.value}\n"
         end
       end
       if markup_is_valid
