@@ -7,12 +7,13 @@ module BeValidAsset
 
   class BeValidCss < BeValidBase
   
-    def initialize
+    def initialize(profile)
+      @profile = profile
     end
   
     def matches?(fragment)
 
-      query_params = {:text => fragment, :output => 'soap12'}
+      query_params = {:text => fragment, :profile => @profile, :output => 'soap12'}
       return validate(query_params)
     end
   
@@ -44,7 +45,7 @@ module BeValidAsset
 
   end
   
-  def be_valid_css
-    BeValidCss.new
+  def be_valid_css(profile = 'css2')
+    BeValidCss.new(profile)
   end
 end
