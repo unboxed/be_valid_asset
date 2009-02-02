@@ -12,11 +12,6 @@ module BeValidAsset
   
     def matches?(fragment)
 
-      if fragment.empty?
-        @message = "Response was blank (maybe a missing integrate_views)"
-        return false
-      end
-
       query_params = {:text => fragment, :output => 'soap12'}
       response = get_validator_response(query_params)
 
