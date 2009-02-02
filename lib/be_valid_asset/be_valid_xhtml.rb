@@ -30,7 +30,12 @@ module BeValidAsset
         return false
       end
 
-      response = get_validator_response(fragment)
+      query_params = {:fragment => fragment, :output => 'soap12'}
+      if @fragment
+        query_params[:prefill] = '1'
+        query_params[:prefill_doctype] = 'xhtml10'
+      end
+      response = get_validator_response(query_params)
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
@@ -67,36 +72,6 @@ module BeValidAsset
 
       def validator_path
         Configuration.markup_validator_path
-      end
-
-      def get_validator_response(fragment)
-        boundary = Digest::MD5.hexdigest(Time.now.to_s)
-        if @fragment
-          data = encode_multipart_params(boundary, :fragment => fragment, :output => 'soap12', :prefill => '1', :prefill_doctype => 'xhtml10')
-        else
-          data = encode_multipart_params(boundary, :fragment => fragment, :output => 'soap12')
-        end
-#        query_string = "fragment=#{CGI.escape(fragment)}&output=soap12"
-#        if @fragment
-#          query_string << '&prefill=1&prefill_doctype=xhtml10'
-#        end
-        if Configuration.enable_caching
-          unless File.directory? Configuration.cache_path
-            FileUtils.mkdir_p Configuration.cache_path
-          end
-          digest = Digest::MD5.hexdigest(fragment)
-          cache_filename = File.join(Configuration.cache_path, digest)
-          if File.exist? cache_filename
-            response = File.open(cache_filename) {|f| Marshal.load(f) }
-          else
-            response = call_validator( data, "Content-type" => "multipart/form-data; boundary=#{boundary}" )
-            File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) } if response.is_a? Net::HTTPSuccess
-          end
-        else
-          response = call_validator( data, "Content-type" => "multipart/form-data; boundary=#{boundary}")
-        end
-        raise "HTTP error: #{response.code}" unless response.is_a? Net::HTTPSuccess
-        return response
       end
 
   end

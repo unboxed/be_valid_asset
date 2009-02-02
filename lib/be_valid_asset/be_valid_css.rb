@@ -19,7 +19,8 @@ module BeValidAsset
         return false
       end
 
-      response = get_validator_response(fragment)
+      query_params = {:text => fragment, :output => 'soap12'}
+      response = get_validator_response(query_params)
 
       markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
       @message = ''
@@ -48,34 +49,11 @@ module BeValidAsset
     private
 
       def validator_host
-        Configuration.markup_validator_host
+        Configuration.css_validator_host
       end
 
       def validator_path
-        Configuration.markup_validator_path
-      end
-
-      def get_validator_response(fragment)
-        boundary = Digest::MD5.hexdigest(Time.now.to_s)
-        data = encode_multipart_params(boundary, :text => fragment, :output => 'soap12')
-        if Configuration.enable_caching
-          unless File.directory? Configuration.cache_path
-            FileUtils.mkdir_p Configuration.cache_path
-          end
-          digest = Digest::MD5.hexdigest(fragment)
-          cache_filename = File.join(Configuration.cache_path, "css-#{digest}")
-          if File.exist? cache_filename
-            response = File.open(cache_filename) {|f| Marshal.load(f) }
-          else
-            response = Net::HTTP.start(Configuration.css_validator_host).post2(Configuration.css_validator_path, data, "Content-type" => "multipart/form-data; boundary=#{boundary}")
-            if response.is_a? Net::HTTPSuccess
-              File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) }
-            end
-          end
-        else
-          response = Net::HTTP.start(Configuration.css_validator_host).post2(Configuration.css_validator_path, data, "Content-type" => "multipart/form-data; boundary=#{boundary}")
-        end
-        return response
+        Configuration.css_validator_path
       end
   
   end
