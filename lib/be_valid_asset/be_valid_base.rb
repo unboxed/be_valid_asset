@@ -12,6 +12,20 @@ module BeValidAsset
         end
       end
 
+      def validate(query_params)
+        response = get_validator_response(query_params)
+
+        markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
+        @message = ''
+        unless markup_is_valid
+          fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
+          REXML::Document.new(response.body).root.each_element('//m:error') do |e|
+            @message << "#{error_line_prefix}: line #{e.elements['m:line'].text}: #{e.elements['m:message'].get_text.value.strip}\n"
+          end
+        end
+        return markup_is_valid
+      end
+
       def get_validator_response(params = {})
         boundary = Digest::MD5.hexdigest(Time.now.to_s)
         data = encode_multipart_params(boundary, params)

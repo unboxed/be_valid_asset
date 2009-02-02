@@ -33,21 +33,8 @@ module BeValidAsset
         query_params[:prefill] = '1'
         query_params[:prefill_doctype] = 'xhtml10'
       end
-      response = get_validator_response(query_params)
 
-      markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
-      @message = ''
-      unless markup_is_valid
-        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
-        REXML::Document.new(response.body).root.each_element('//m:error') do |e|
-          @message << "Invalid markup: line #{e.elements['m:line'].text}: #{e.elements['m:message'].get_text.value.strip}\n"
-        end
-      end
-      if markup_is_valid
-        return true
-      else
-        return false
-      end
+      return validate(query_params)
     end
   
     def description
@@ -70,6 +57,10 @@ module BeValidAsset
 
       def validator_path
         Configuration.markup_validator_path
+      end
+
+      def error_line_prefix
+        'Invalid markup'
       end
 
   end

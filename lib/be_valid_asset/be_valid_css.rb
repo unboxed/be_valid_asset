@@ -13,18 +13,7 @@ module BeValidAsset
     def matches?(fragment)
 
       query_params = {:text => fragment, :output => 'soap12'}
-      response = get_validator_response(query_params)
-
-      markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
-      @message = ''
-      
-      unless markup_is_valid
-        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
-        REXML::Document.new(response.body).root.each_element('//m:error') do |e|
-          @message << "Invalid css: line #{e.elements['m:line'].text}: #{e.elements['m:message'].get_text.value.strip}\n"
-        end
-      end
-      return markup_is_valid
+      return validate(query_params)
     end
   
     def description
@@ -48,7 +37,11 @@ module BeValidAsset
       def validator_path
         Configuration.css_validator_path
       end
-  
+
+      def error_line_prefix
+        'Invalid css'
+      end
+
   end
   
   def be_valid_css
