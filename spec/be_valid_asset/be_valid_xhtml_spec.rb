@@ -43,6 +43,17 @@ describe 'be_valid_xhtml' do
         html.should be_valid_xhtml
       }.should raise_error
     end
+
+    it "should mark test as pending if ENV['NONET'] is true" do
+      ENV['NONET'] = 'true'
+
+      html = get_file('valid.html')
+      lambda {
+        html.should be_valid_xhtml
+      }.should raise_error(Spec::Example::ExamplePendingError)
+
+      ENV.delete('NONET')
+    end
   end
   
   describe "with caching" do

@@ -9,7 +9,7 @@ module BeValidAsset
   Configuration.markup_validator_host = 'validator.w3.org'
   Configuration.markup_validator_path = '/check'
 
-  class BeValidXhtml
+  class BeValidXhtml < BeValidBase
   
     def initialize(options = {})
       @fragment = options[:fragment]
@@ -18,13 +18,13 @@ module BeValidAsset
     # Assert that markup (html/xhtml) is valid according the W3C validator web service.
   
     def matches?(fragment)
+
+      check_net_enabled
       
       if fragment.respond_to? :body
         fragment = fragment.body
       end
           
-      return true if validity_checks_disabled?
-
       if fragment.empty?
         @message = "Response was blank (maybe a missing integrate_views)"
         return false
