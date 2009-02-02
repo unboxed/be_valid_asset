@@ -26,11 +26,11 @@ module BeValidAsset
         return markup_is_valid
       end
 
-      def get_validator_response(params = {})
+      def get_validator_response(query_params = {})
         boundary = Digest::MD5.hexdigest(Time.now.to_s)
-        data = encode_multipart_params(boundary, params)
+        data = encode_multipart_params(boundary, query_params)
         if Configuration.enable_caching
-          digest = Digest::MD5.hexdigest(params.to_s)
+          digest = Digest::MD5.hexdigest(query_params.to_a.sort {|a,b| a[0].to_s<=>b[0].to_s}.join)
           cache_filename = File.join(Configuration.cache_path, digest)
           if File.exist? cache_filename
             response = File.open(cache_filename) {|f| Marshal.load(f) }
