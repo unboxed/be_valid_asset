@@ -24,19 +24,19 @@ module BeValidAsset
           if File.exist? cache_filename
             response = File.open(cache_filename) {|f| Marshal.load(f) }
           else
-            response = call_validator( data, "Content-type" => "multipart/form-data; boundary=#{boundary}" )
+            response = call_validator( data, boundary )
             File.open(cache_filename, 'w') {|f| Marshal.dump(response, f) } if response.is_a? Net::HTTPSuccess
           end
         else
-          response = call_validator( data, "Content-type" => "multipart/form-data; boundary=#{boundary}")
+          response = call_validator( data, boundary)
         end
         raise "HTTP error: #{response.code}" unless response.is_a? Net::HTTPSuccess
         return response
       end
 
-      def call_validator(data, headers = {})
+      def call_validator(data, boundary)
         check_net_enabled
-        return Net::HTTP.start(validator_host).post2(validator_path, data, headers )
+        return Net::HTTP.start(validator_host).post2(validator_path, data, "Content-type" => "multipart/form-data; boundary=#{boundary}" )
       end
 
       def encode_multipart_params(boundary, params = {})
