@@ -16,7 +16,10 @@ describe 'be_valid_css' do
       css = get_file('invalid.css')
       lambda {
         css.should be_valid_css
-      }.should raise_error(SpecFailed, /expected css to be valid, but validation produced these errors/)
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/expected css to be valid, but validation produced these errors/)
+        e.message.should match(/Invalid css: line 8: Property wibble doesn't exist/)
+      }
     end
 
     it "should fail unless resposne is HTTP OK" do
@@ -73,7 +76,10 @@ describe 'be_valid_css' do
       count = Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size
       lambda {
         css.should be_valid_css
-      }.should raise_error(SpecFailed, /expected css to be valid, but validation produced these errors/)
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/expected css to be valid, but validation produced these errors/)
+        e.message.should match(/Invalid css: line 8: Property wibble doesn't exist/)
+      }
       Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size.should eql(count + 1)
     end
 
@@ -84,7 +90,10 @@ describe 'be_valid_css' do
       Net::HTTP.should_not_receive(:start)
       lambda {
         css.should be_valid_css
-      }.should raise_error(SpecFailed, /expected css to be valid, but validation produced these errors/)
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/expected css to be valid, but validation produced these errors/)
+        e.message.should match(/Invalid css: line 8: Property wibble doesn't exist/)
+      }
     end
 
     it "should not cache the result unless it is an HTTP OK response" do

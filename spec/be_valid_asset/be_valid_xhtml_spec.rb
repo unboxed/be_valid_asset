@@ -25,14 +25,26 @@ describe 'be_valid_xhtml' do
       html = get_file('invalid.html')
       lambda {
         html.should be_valid_xhtml
-      }.should raise_error(SpecFailed, /expected xhtml to be valid, but validation produced these errors/)
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
+        e.message.should match(/Invalid markup: line 12: end tag for "b" omitted, but OMITTAG NO was specified/)
+        e.message.should match(/Invalid markup: line 12: end tag for element "b" which is not open/)
+        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: b line 12 and p/)
+        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: p line 12 and b/)
+      }
     end
   
     it "should not validate an invalid response" do
       response = MockResponse.new(get_file('invalid.html'))
       lambda {
         response.should be_valid_xhtml
-      }.should raise_error(SpecFailed, /expected xhtml to be valid, but validation produced these errors/)    
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
+        e.message.should match(/Invalid markup: line 12: end tag for "b" omitted, but OMITTAG NO was specified/)
+        e.message.should match(/Invalid markup: line 12: end tag for element "b" which is not open/)
+        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: b line 12 and p/)
+        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: p line 12 and b/)
+      }
     end
 
     it "should fail when passed a response with a blank body" do
@@ -96,7 +108,13 @@ describe 'be_valid_xhtml' do
       count = Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size
       lambda {
         response.should be_valid_xhtml
-      }.should raise_error(SpecFailed, /expected xhtml to be valid, but validation produced these errors/)      
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
+        e.message.should match(/Invalid markup: line 12: end tag for "b" omitted, but OMITTAG NO was specified/)
+        e.message.should match(/Invalid markup: line 12: end tag for element "b" which is not open/)
+        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: b line 12 and p/)
+        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: p line 12 and b/)
+      }
       Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size.should eql(count + 1)
     end
     
@@ -107,7 +125,13 @@ describe 'be_valid_xhtml' do
       Net::HTTP.should_not_receive(:start)
       lambda {
         response.should be_valid_xhtml
-      }.should raise_error(SpecFailed, /expected xhtml to be valid, but validation produced these errors/)
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
+        e.message.should match(/Invalid markup: line 12: end tag for "b" omitted, but OMITTAG NO was specified/)
+        e.message.should match(/Invalid markup: line 12: end tag for element "b" which is not open/)
+        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: b line 12 and p/)
+        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: p line 12 and b/)
+      }
     end
 
     it "should not cache the result unless it is an HTTP OK response" do
