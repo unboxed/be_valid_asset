@@ -13,7 +13,7 @@ module BeValidAsset
   
     def matches?(fragment)
 
-      query_params = {:text => fragment, :profile => @profile, :output => 'soap12'}
+      query_params = { :text => fragment, :profile => @profile }
       return validate(query_params)
     end
   

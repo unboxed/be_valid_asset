@@ -28,7 +28,7 @@ module BeValidAsset
         return false
       end
 
-      query_params = {:fragment => fragment, :output => 'soap12'}
+      query_params = { :fragment => fragment }
       if @fragment
         query_params[:prefill] = '1'
         query_params[:prefill_doctype] = 'xhtml10'

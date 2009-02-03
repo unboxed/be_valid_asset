@@ -1,7 +1,7 @@
 
 module BeValidAsset
 
-  # Abstrace base class for other matchers
+  # Abstract base class for other matchers
   class BeValidBase
 
     private
@@ -13,6 +13,7 @@ module BeValidAsset
       end
 
       def validate(query_params)
+        query_params.merge!( {:output => 'soap12' } )
         response = get_validator_response(query_params)
 
         markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
