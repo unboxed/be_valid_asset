@@ -64,6 +64,12 @@ CSS files can be validated as follows:
       css.should be_valid_css
     end
 
+be\_valid\_css takes an optional parameter specifying the css profile to test against. It defaults to testing against CSS 2.1. It can be set to any of the profiles supported by the CSS validator (e.g. css1, css2, css21, css3). There are also the following shortcut methods:
+
+ * `be_valid_css1` => CSS 1.0
+ * `be_valid_css2` => CSS 2.1
+ * `be_valid_css3` => CSS 3.0
+
 ### Disabling network tests
 
 If the environment variable `NONET` is set to true, then all tests with no cached response available will be marked as pending.

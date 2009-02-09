@@ -45,6 +45,29 @@ describe 'be_valid_css' do
 
       ENV.delete('NONET')
     end
+
+    describe "CSS version" do
+      (1..3).each do |version|
+        describe version.to_s do
+          before(:each) do
+            @css = get_file("valid-#{version.to_s}.css")
+          end
+          (1..3).each do |test_version|
+            if test_version < version
+              it "should not be valid css#{test_version.to_s}" do
+                lambda {
+                  @css.should send("be_valid_css#{test_version.to_s}".to_sym)
+                  }.should raise_error(SpecFailed)
+              end
+            else
+              it "should be valid css#{test_version.to_s}" do
+                @css.should send("be_valid_css#{test_version.to_s}".to_sym)
+              end
+            end
+          end
+        end
+      end
+    end
   end
   
   describe "with caching" do

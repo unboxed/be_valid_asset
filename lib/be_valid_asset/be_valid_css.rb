@@ -45,7 +45,19 @@ module BeValidAsset
 
   end
   
-  def be_valid_css(profile = 'css2')
+  def be_valid_css(profile = 'css21')
     BeValidCss.new(profile)
+  end
+
+  def be_valid_css1
+    be_valid_css 'css1'
+  end
+
+  def be_valid_css2
+    be_valid_css 'css21'
+  end
+
+  def be_valid_css3
+    be_valid_css 'css3'
   end
 end
