@@ -47,6 +47,17 @@ describe 'be_valid_xhtml' do
       }
     end
 
+    it "should display invalid content when requested" do
+      BeValidAsset::Configuration.display_invalid_content = true
+      html = get_file('invalid.html')
+      lambda {
+        html.should be_valid_xhtml
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/<p><b>This is an example invalid html file<\/p><\/b>/)
+      }
+      BeValidAsset::Configuration.display_invalid_content = true
+    end
+
     it "should fail when passed a response with a blank body" do
       response = MockResponse.new('')
       lambda {

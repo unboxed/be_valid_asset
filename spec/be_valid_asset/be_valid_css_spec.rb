@@ -22,6 +22,17 @@ describe 'be_valid_css' do
       }
     end
 
+    it "should display invalid content when requested" do
+      BeValidAsset::Configuration.display_invalid_content = true
+      css = get_file('invalid.css')
+      lambda {
+        css.should be_valid_css
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/wibble:0;/)
+      }
+      BeValidAsset::Configuration.display_invalid_content = true
+    end
+
     it "should fail unless resposne is HTTP OK" do
       css = get_file('valid.css')
 
