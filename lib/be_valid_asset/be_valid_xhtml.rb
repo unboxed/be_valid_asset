@@ -20,7 +20,7 @@ module BeValidAsset
     def matches?(fragment)
 
       if fragment.respond_to? :body
-        fragment = fragment.body
+        fragment = fragment.body.to_s
       end
           
       if fragment.empty?
