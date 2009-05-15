@@ -90,6 +90,9 @@ There are a few configuration options that can be configured in `spec_helper.rb`
     BeValidAsset::Configuration.css_validator_host = 'jigsaw.w3.org'
     BeValidAsset::Configuration.css_validator_path = '/css-validator/validator'
 
+### http_proxy
+
+    If you need to use a proxy server to access the validator service, set the environment variable http_proxy.
 
 If you are doing more than the occasional check, you should probably run your own copy of the validator, and use that.
 Instructions here: [http://validator.w3.org/docs/install.html](http://validator.w3.org/docs/install.html) or [http://jigsaw.w3.org/css-validator/DOWNLOAD.html](http://jigsaw.w3.org/css-validator/DOWNLOAD.html)
