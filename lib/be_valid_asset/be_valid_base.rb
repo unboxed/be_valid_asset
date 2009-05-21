@@ -69,7 +69,7 @@ module BeValidAsset
         if ENV['http_proxy']
           uri = URI.parse(ENV['http_proxy'])
           proxy_user, proxy_pass = uri.userinfo.split(/:/) if uri.userinfo
-          Net::HTTP::Proxy(uri.host, uri.port, proxy_user, proxy_pass)
+          Net::HTTP.Proxy(uri.host, uri.port, proxy_user, proxy_pass)
         else
           Net::HTTP
         end
