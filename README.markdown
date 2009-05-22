@@ -70,9 +70,16 @@ be\_valid\_css takes an optional parameter specifying the css profile to test ag
  * `be_valid_css2` => CSS 2.1
  * `be_valid_css3` => CSS 3.0
 
+Environment Variables
+---------------------
+
 ### Disabling network tests
 
 If the environment variable `NONET` is set to true, then all tests with no cached response available will be marked as pending.
+
+### http_proxy
+
+If you need to use a proxy server to access the validator service, set the environment variable http_proxy.
 
 Configuration
 -------------
@@ -89,10 +96,6 @@ There are a few configuration options that can be configured in `spec_helper.rb`
     BeValidAsset::Configuration.markup_validator_path = '/check'
     BeValidAsset::Configuration.css_validator_host = 'jigsaw.w3.org'
     BeValidAsset::Configuration.css_validator_path = '/css-validator/validator'
-
-### http_proxy
-
-If you need to use a proxy server to access the validator service, set the environment variable http_proxy.
 
 If you are doing more than the occasional check, you should probably run your own copy of the validator, and use that.
 Instructions here: [http://validator.w3.org/docs/install.html](http://validator.w3.org/docs/install.html) or [http://jigsaw.w3.org/css-validator/DOWNLOAD.html](http://jigsaw.w3.org/css-validator/DOWNLOAD.html)
