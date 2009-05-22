@@ -55,7 +55,7 @@ describe 'be_valid_xhtml' do
       }.should raise_error(SpecFailed) { |e|
         e.message.should match(/<p><b>This is an example invalid html file<\/p><\/b>/)
       }
-      BeValidAsset::Configuration.display_invalid_content = true
+      BeValidAsset::Configuration.display_invalid_content = false
     end
 
     it "should fail when passed a response with a blank body" do
@@ -87,38 +87,6 @@ describe 'be_valid_xhtml' do
       }.should raise_error(Spec::Example::ExamplePendingError)
 
       ENV.delete('NONET')
-    end
-    
-    it "should use direct http without ENV['http_proxy']" do
-      ENV.delete('http_proxy')
-      html = response = MockResponse.new(get_file('valid.html'))
-      r = Net::HTTPSuccess.new('1.1', 200, 'HTTPOK')
-      r['x-w3c-validator-status'] = 'Valid'
-      Net::HTTP.stub!(:post2).and_return(r)
-      Net::HTTP.stub!(:start).and_return(Net::HTTP)
-      html.should be_valid_xhtml
-      Net::HTTP.should_not_receive(:Proxy)
-    end
-    
-    it "should use proxied http connection with ENV['http_proxy']" do
-      ENV['http_proxy'] = "http://user:pw@localhost:3128"
-      html = response = MockResponse.new(get_file('valid.html'))
-      r = Net::HTTPSuccess.new('1.1', 200, 'HTTPOK')
-      r['x-w3c-validator-status'] = 'Valid'
-      Net::HTTP.stub!(:post2).and_return(r)
-      Net::HTTP.stub!(:start).and_return(Net::HTTP)
-      Net::HTTP.should_receive(:Proxy).with('localhost', 3128, "user", "pw").and_return(Net::HTTP)
-      html.should be_valid_xhtml
-      ENV.delete('http_proxy')
-    end
-    
-    it "should raise exception with invalid http_proxy" do
-      ENV['http_proxy'] = "http://invalid:uri"
-      html = response = MockResponse.new(get_file('valid.html'))
-      lambda {
-        html.should be_valid_xhtml
-      }.should raise_error(URI::InvalidURIError)
-      ENV.delete('http_proxy')
     end
   end
   
@@ -213,6 +181,38 @@ describe 'be_valid_xhtml' do
       }.should raise_error(Spec::Example::ExamplePendingError)
 
       ENV.delete('NONET')
+    end
+  end
+
+  describe "Proxying" do
+    before :each do
+      r = Net::HTTPSuccess.new('1.1', 200, 'HTTPOK')
+      r['x-w3c-validator-status'] = 'Valid'
+      @http = mock('HTTP')
+      @http.stub!(:post2).and_return(r)
+
+      @html = MockResponse.new(get_file('valid.html'))
+    end
+
+    it "should use direct http without ENV['http_proxy']" do
+      ENV.delete('http_proxy')
+      Net::HTTP.should_receive(:start).with(BeValidAsset::Configuration.markup_validator_host).and_return(@http)
+      @html.should be_valid_xhtml
+    end
+
+    it "should use proxied http connection with ENV['http_proxy']" do
+      ENV['http_proxy'] = "http://user:pw@localhost:3128"
+      Net::HTTP.should_receive(:start).with(BeValidAsset::Configuration.markup_validator_host, nil, 'localhost', 3128, "user", "pw").and_return(@http)
+      @html.should be_valid_xhtml
+      ENV.delete('http_proxy')
+    end
+
+    it "should raise exception with invalid http_proxy" do
+      ENV['http_proxy'] = "http://invalid:uri"
+      lambda {
+        @html.should be_valid_xhtml
+      }.should raise_error(URI::InvalidURIError)
+      ENV.delete('http_proxy')
     end
   end
 end

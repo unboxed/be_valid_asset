@@ -49,7 +49,7 @@ module BeValidAsset
         check_net_enabled
         boundary = Digest::MD5.hexdigest(Time.now.to_s)
         data = encode_multipart_params(boundary, query_params)
-        return http.start(validator_host).post2(validator_path, data, "Content-type" => "multipart/form-data; boundary=#{boundary}" )
+        return http_start(validator_host).post2(validator_path, data, "Content-type" => "multipart/form-data; boundary=#{boundary}" )
       end
 
       def encode_multipart_params(boundary, params = {})
@@ -65,13 +65,13 @@ module BeValidAsset
         ret
       end
       
-      def http
+      def http_start(host)
         if ENV['http_proxy']
           uri = URI.parse(ENV['http_proxy'])
           proxy_user, proxy_pass = uri.userinfo.split(/:/) if uri.userinfo
-          Net::HTTP.Proxy(uri.host, uri.port, proxy_user, proxy_pass)
+          Net::HTTP.start(host, nil, uri.host, uri.port, proxy_user, proxy_pass)
         else
-          Net::HTTP
+          Net::HTTP.start(host)
         end
       end
   end
