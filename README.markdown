@@ -6,7 +6,11 @@ Provides `be_valid_xhtml` and `be_valid_css` matchers for rspec controller and v
 Installation
 ------------
 
-To use be\_valid\_asset in your project, install the plugin:
+To use be\_valid\_asset in your project, install the gem:
+
+    gem install unboxed-be_valid_asset -s http://gems.github.com
+
+or as a plugin
 
     ./script/plugin install git://github.com/unboxed/be_valid_asset.git
 
