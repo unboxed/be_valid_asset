@@ -11,11 +11,31 @@ describe 'be_valid_css' do
       css = get_file('valid.css')
       css.should be_valid_css
     end
-  
+
+    it "should validate a valid response" do
+      response = MockResponse.new(get_file('valid.css'))
+      response.should be_valid_css
+    end
+
+    it "should validate if body is not a string but can be converted to valid string" do
+      response = MockResponse.new(stub("CSS", :to_s => get_file('valid.css')))
+      response.should be_valid_css
+    end
+
     it "should not validate an invalid string" do
       css = get_file('invalid.css')
       lambda {
         css.should be_valid_css
+      }.should raise_error(SpecFailed) { |e|
+        e.message.should match(/expected css to be valid, but validation produced these errors/)
+        e.message.should match(/Invalid css: line 8: Property wibble doesn't exist/)
+      }
+    end
+
+    it "should not validate an invalid response" do
+      response = MockResponse.new(get_file('invalid.css'))
+      lambda {
+        response.should be_valid_css
       }.should raise_error(SpecFailed) { |e|
         e.message.should match(/expected css to be valid, but validation produced these errors/)
         e.message.should match(/Invalid css: line 8: Property wibble doesn't exist/)

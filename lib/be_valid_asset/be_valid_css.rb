@@ -13,6 +13,10 @@ module BeValidAsset
   
     def matches?(fragment)
 
+      if fragment.respond_to? :body
+        fragment = fragment.body.to_s
+      end
+
       query_params = { :text => fragment, :profile => @profile }
       return validate(query_params)
     end
