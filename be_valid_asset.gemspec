@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
 
   s.name = %q{be_valid_asset}
-  s.version = "1.0.1"
+  s.version = "1.1.0"
 
   s.description = %q{Provides be_valid_xhtml and be_valid_css matchers for rspec controller and view tests.}
   s.email = %q{github@unboxedconsulting.com}
@@ -23,24 +23,29 @@ Gem::Specification.new do |s|
     Rakefile
     README.markdown
     MIT-LICENSE.txt
-    lib/be_valid_asset.rb
-    lib/be_valid_asset/be_valid_xhtml.rb
-    lib/be_valid_asset/be_valid_css.rb
     lib/be_valid_asset/be_valid_base.rb
-    spec/spec_helper.rb
+    lib/be_valid_asset/be_valid_css.rb
+    lib/be_valid_asset/be_valid_feed.rb
+    lib/be_valid_asset/be_valid_xhtml.rb
+    lib/be_valid_asset.rb
     spec/be_valid_asset/be_valid_css_spec.rb
+    spec/be_valid_asset/be_valid_feed_spec.rb
     spec/be_valid_asset/be_valid_xhtml_spec.rb
-    spec/files/valid.html
-    spec/files/valid-3.css
-    spec/files/invalid.html
-    spec/files/valid.css
-    spec/files/valid-2.css
-    spec/files/valid-1.css
+    spec/spec_helper.rb
     spec/files/invalid.css
+    spec/files/invalid.html
+    spec/files/invalid_feed.xml
+    spec/files/valid-1.css
+    spec/files/valid-2.css
+    spec/files/valid-3.css
+    spec/files/valid.css
+    spec/files/valid.html
+    spec/files/valid_feed.xml
     spec/spec.opts
   )
   s.test_files = %w(
     spec/be_valid_asset/be_valid_css_spec.rb
+    spec/be_valid_asset/be_valid_feed_spec.rb
     spec/be_valid_asset/be_valid_xhtml_spec.rb
   )
 end
