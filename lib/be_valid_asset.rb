@@ -28,3 +28,4 @@ end
 require 'be_valid_asset/be_valid_base'
 require 'be_valid_asset/be_valid_xhtml'
 require 'be_valid_asset/be_valid_css'
+require 'be_valid_asset/be_valid_feed'

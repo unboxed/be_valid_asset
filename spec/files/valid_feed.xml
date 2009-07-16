@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Interesting Stuff</title>
+    <link>http://site.example.com/</link>
+    <description>Description about interesting Stuff...</description>
+    <language>en-gb</language>
+    <atom:link type="application/rss+xml" href="http://site.example.com/index.rss" rel="self"/>
+    <item>
+      <title>Article 1 title</title>
+      <category>Category 1</category>
+      <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;&lt;br /&gt;&lt;img src="http://site.example.com/articles/article-1-title/images/1.jpg" alt="Some Alt Text" /&gt;</description>
+      <pubDate>Wed, 15 Jul 2009 17:03:36 +0100</pubDate>
+      <link>http://site.example.com/articles/article-1-title</link>
+      <guid>http://site.example.com/articles/article-1-title</guid>
+    </item>
+    <item>
+      <title>Article 2 title</title>
+      <category>Category 2</category>
+      <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;&lt;br /&gt;&lt;img src="http://site.example.com/articles/article-2-title/images/1.jpg" alt="Some Alt Text" /&gt;</description>
+      <pubDate>Wed, 15 Jul 2009 13:15:57 +0100</pubDate>
+      <link>http://site.example.com/articles/article-2-title</link>
+      <guid>http://site.example.com/articles/article-2-title</guid>
+    </item>
+    <item>
+      <title>Article 3 title</title>
+      <category>Category 1</category>
+      <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;&lt;br /&gt;&lt;img src="http://site.example.com/articles/article-3-title/images/1.jpg" alt="Some Alt Text" /&gt;</description>
+      <pubDate>Wed, 15 Jul 2009 13:11:56 +0100</pubDate>
+      <link>http://site.example.com/articles/article-3-title</link>
+      <guid>http://site.example.com/articles/article-3-title</guid>
+    </item>
+  </channel>
+</rss>
