@@ -1,7 +1,7 @@
 be\_valid\_asset
 ==============
 
-Provides `be_valid_xhtml` and `be_valid_css` matchers for rspec controller and view tests.
+Provides `be_valid_xhtml`, `be_valid_css` and `be_valid_feed` matchers for rspec controller and view tests.
 
 Installation
 ------------
@@ -74,6 +74,23 @@ be\_valid\_css takes an optional parameter specifying the css profile to test ag
  * `be_valid_css2` => CSS 2.1
  * `be_valid_css3` => CSS 3.0
 
+### Feed validation
+
+RSS and Atom feeds can be validated from a response, or a string, in the same way as for xhtml or CSS.  e.g.
+
+    describe FooController do
+      integrate_views
+
+      describe "GET 'index.rss'" do
+        it "should be valid" do
+          get 'index.rss'
+          response.should be_valid_feed
+        end
+      end
+    end
+
+There are also aliased methods `be_valid_rss` and `be_valid_atom` that do the same thing.
+
 Environment Variables
 ---------------------
 
@@ -100,9 +117,11 @@ There are a few configuration options that can be configured in `spec_helper.rb`
     BeValidAsset::Configuration.markup_validator_path = '/check'
     BeValidAsset::Configuration.css_validator_host = 'jigsaw.w3.org'
     BeValidAsset::Configuration.css_validator_path = '/css-validator/validator'
+    BeValidAsset::Configuration.feed_validator_host = 'validator.w3.org'
+    BeValidAsset::Configuration.feed_validator_path = '/feed/check.cgi'
 
 If you are doing more than the occasional check, you should probably run your own copy of the validator, and use that.
-Instructions here: [http://validator.w3.org/docs/install.html](http://validator.w3.org/docs/install.html) or [http://jigsaw.w3.org/css-validator/DOWNLOAD.html](http://jigsaw.w3.org/css-validator/DOWNLOAD.html)
+Instructions here: [http://validator.w3.org/docs/install.html](http://validator.w3.org/docs/install.html),  [http://jigsaw.w3.org/css-validator/DOWNLOAD.html](http://jigsaw.w3.org/css-validator/DOWNLOAD.html) or [http://validator.w3.org/feed/about.html#where](http://validator.w3.org/feed/about.html#where)
 
 ### Caching
 
@@ -111,6 +130,11 @@ To use this feature, it must be enabled, and a cache path must be set:
 
     BeValidAsset::Configuration.enable_caching = true
     BeValidAsset::Configuration.cache_path = File.join(RAILS_ROOT, %w(tmp be_valid_asset_cache))
+
+Issues / Feature Requests
+-------------------------
+
+Please use the [github issue tracker](http://github.com/unboxed/be_valid_asset/issues) to track any bugs/feature requests.
 
 Licensing etc.
 --------------
