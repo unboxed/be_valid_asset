@@ -16,16 +16,24 @@ module BeValidAsset
         query_params.merge!( {:output => 'soap12' } )
         response = get_validator_response(query_params)
 
-        markup_is_valid = response['x-w3c-validator-status'] == 'Valid'
+        markup_is_valid = response_indicates_valid?(response)
         @message = ''
         unless markup_is_valid
-          fragment = query_params[:fragment] || query_params[:text]
-          fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
-          REXML::Document.new(response.body).root.each_element('//m:error') do |e|
-            @message << "#{error_line_prefix}: line #{e.elements['m:line'].text}: #{e.elements['m:message'].get_text.value.strip}\n"
-          end
+          process_errors(query_params, response)
         end
         return markup_is_valid
+      end
+
+      def response_indicates_valid?(response)
+        response['x-w3c-validator-status'] == 'Valid'
+      end
+
+      def process_errors(query_params, response)
+        fragment = query_params[:fragment] || query_params[:text]
+        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
+        REXML::Document.new(response.body).root.each_element('//m:error') do |e|
+          @message << "#{error_line_prefix}: line #{e.elements['m:line'].text}: #{e.elements['m:message'].get_text.value.strip}\n"
+        end
       end
 
       def get_validator_response(query_params = {})
