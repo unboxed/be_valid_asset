@@ -1,5 +1,10 @@
 require 'rubygems'
-require 'spec'
+require 'spec/autorun'
+
+begin
+  require 'ruby-debug'
+rescue LoadError
+end
 
 $: << File.join(File.dirname(__FILE__), %w(.. lib))
 
