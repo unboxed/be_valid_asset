@@ -50,7 +50,7 @@ describe 'be_valid_css' do
       }.should raise_error(SpecFailed) { |e|
         e.message.should match(/wibble:0;/)
       }
-      BeValidAsset::Configuration.display_invalid_content = true
+      BeValidAsset::Configuration.display_invalid_content = false
     end
 
     it "should fail unless resposne is HTTP OK" do
