@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
 
   s.name = %q{be_valid_asset}
-  s.version = "1.1.0"
+  s.version = "1.1.1"
 
   s.description = %q{Provides be_valid_xhtml and be_valid_css matchers for rspec controller and view tests.}
   s.email = %q{github@unboxedconsulting.com}
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
     spec/spec_helper.rb
     spec/files/invalid.css
     spec/files/invalid.html
+    spec/files/invalid2.html
     spec/files/invalid_feed.xml
     spec/files/valid-1.css
     spec/files/valid-2.css
