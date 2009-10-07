@@ -30,9 +30,21 @@ module BeValidAsset
 
       def process_errors(query_params, response)
         fragment = query_params[:fragment] || query_params[:text]
-        fragment.split($/).each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
+        if Configuration.display_invalid_content || Configuration.display_invalid_lines
+          lines = fragment.split($/)
+        end
+        lines.each_with_index{|line, index| @message << "#{'%04i' % (index+1)} : #{line}#{$/}"} if Configuration.display_invalid_content
         REXML::Document.new(response.body).root.each_element('//m:error') do |e|
           @message << "#{error_line_prefix}: line #{e.elements['m:line'].text}: #{e.elements['m:message'].get_text.value.strip}\n"
+          if Configuration.display_invalid_lines
+            line_no = e.elements['m:line'].text.to_i
+            start_line = [line_no - (Configuration.display_lines_around / 2), 1].max
+            end_line = [line_no + (Configuration.display_lines_around / 2), lines.length].min
+            for i in start_line..end_line
+              @message << "#{'%04i' % i}#{ i == line_no ? '>>' : '  ' }: #{ lines[i - 1] }#{ $/ }"
+            end
+            @message << "------\n"
+          end
         end
       end
 

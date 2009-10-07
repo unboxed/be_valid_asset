@@ -2,7 +2,9 @@ module BeValidAsset
   class Configuration
     @@config = {
       :display_invalid_content  => false,
-      :enable_caching           => false
+      :enable_caching           => false,
+      :display_invalid_lines    => false,
+      :display_lines_around     => 5
     }
 
     def self.method_missing(name, *args)

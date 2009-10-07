@@ -5,13 +5,13 @@ unless defined?(SpecFailed)
 end
 
 describe 'be_valid_xhtml' do
-  
+
   describe "without caching" do
     it "should validate a valid string" do
       html = get_file('valid.html')
       html.should be_valid_xhtml
     end
-  
+
     it "should validate a valid response" do
       response = MockResponse.new(get_file('valid.html'))
       response.should be_valid_xhtml
@@ -25,7 +25,7 @@ describe 'be_valid_xhtml' do
     it "should validate a valid fragment" do
       "<p>This is a Fragment</p>".should be_valid_xhtml_fragment
     end
-  
+
     it "should not validate an invalid string" do
       html = get_file('invalid.html')
       lambda {
@@ -38,7 +38,7 @@ describe 'be_valid_xhtml' do
         e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: p line 12 and b/)
       }
     end
-  
+
     it "should not validate an invalid response" do
       response = MockResponse.new(get_file('invalid.html'))
       lambda {
@@ -61,6 +61,75 @@ describe 'be_valid_xhtml' do
         e.message.should match(/<p><b>This is an example invalid html file<\/p><\/b>/)
       }
       BeValidAsset::Configuration.display_invalid_content = false
+    end
+
+    describe "displaying invalid lines" do
+      before :each do
+        BeValidAsset::Configuration.display_invalid_lines = true
+      end
+      after :each do
+        BeValidAsset::Configuration.display_invalid_lines = false
+      end
+
+      it "should display invalid lines when requested" do
+        html = get_file('invalid.html')
+        lambda do
+          html.should be_valid_xhtml
+        end.should raise_error(SpecFailed) { |e|
+          e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
+          e.message.should_not match(/0009  :/)
+          e.message.should match(/0010  :/)
+          e.message.should match(/0011  :/)
+          e.message.should match(/0012>>:/)
+          e.message.should match(/0013  :/)
+          e.message.should match(/0014  :/)
+          e.message.should_not match(/0015  :/)
+        }
+      end
+
+      it "should display specified invalid lines window when requested" do
+        BeValidAsset::Configuration.display_lines_around = 3
+        html = get_file('invalid.html')
+        lambda do
+          html.should be_valid_xhtml
+        end.should raise_error(SpecFailed) { |e|
+          e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
+          e.message.should_not match(/0010  :/)
+          e.message.should match(/0011  :/)
+          e.message.should match(/0012>>:/)
+          e.message.should match(/0013  :/)
+          e.message.should_not match(/0014  :/)
+        }
+        BeValidAsset::Configuration.display_lines_around = 5 # Restore the default value
+      end
+
+      it "should not underrun the beginning of the source" do
+        BeValidAsset::Configuration.display_lines_around = 7
+        html = get_file('invalid2.html')
+        lambda do
+          html.should be_valid_xhtml
+        end.should raise_error(SpecFailed) { |e|
+          e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
+          e.message.should_not match(/0000  :/)
+          e.message.should match(/0001  :/)
+          e.message.should match(/0003>>:/)
+        }
+        BeValidAsset::Configuration.display_lines_around = 5 # Restore the default value
+      end
+
+      it "should not overrun the end of the source" do
+        BeValidAsset::Configuration.display_lines_around = 11
+        html = get_file('invalid.html')
+        lambda do
+          html.should be_valid_xhtml
+        end.should raise_error(SpecFailed) { |e|
+          e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
+          e.message.should match(/0012>>:/)
+          e.message.should match(/0015  :/)
+          e.message.should_not match(/0016  :/)
+        }
+        BeValidAsset::Configuration.display_lines_around = 5 # Restore the default value
+      end
     end
 
     it "should fail when passed a response with a blank body" do
@@ -94,7 +163,7 @@ describe 'be_valid_xhtml' do
       ENV.delete('NONET')
     end
   end
-  
+
   describe "with caching" do
     before(:each) do
       BeValidAsset::Configuration.enable_caching = true
@@ -103,22 +172,22 @@ describe 'be_valid_xhtml' do
     after(:each) do
       BeValidAsset::Configuration.enable_caching = false
     end
-    
+
     it "should validate a valid string and cache the response" do
       html = get_file('valid.html')
       count = Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size
       html.should be_valid_xhtml
       Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size.should eql(count + 1)
     end
-    
+
     it "should validate a valid string using the cached response" do
       html = get_file('valid.html')
       html.should be_valid_xhtml
-      
+
       Net::HTTP.should_not_receive(:start)
       html.should be_valid_xhtml
     end
-    
+
     it "should not validate an invalid response, but still cache the response" do
       response = MockResponse.new(get_file('invalid.html'))
       count = Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size
@@ -133,11 +202,11 @@ describe 'be_valid_xhtml' do
       }
       Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size.should eql(count + 1)
     end
-    
+
     it "should not validate an invalid response, but use the cached response" do
       response = MockResponse.new(get_file('invalid.html'))
       response.should_not be_valid_xhtml
-      
+
       Net::HTTP.should_not_receive(:start)
       lambda {
         response.should be_valid_xhtml
