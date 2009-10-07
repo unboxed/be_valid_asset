@@ -107,9 +107,16 @@ Configuration
 
 There are a few configuration options that can be configured in `spec_helper.rb` as follows:
 
-### Display Full HTML for failures:
+### Display Full source for failures:
 
     BeValidAsset::Configuration.display_invalid_content = false (default)
+
+### Display surrounding source for failures:
+
+This will cause it to output the failing line, and n surrounding lines (defaults to 5)
+
+    BeValidAsset::Configuration.display_invalid_lines = false (default)
+    BeValidAsset::Configuration.display_invalid_lines_count = 5 (default)
 
 ### Change validator host/path:
 
