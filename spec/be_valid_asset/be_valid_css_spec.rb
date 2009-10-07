@@ -11,6 +11,10 @@ describe 'be_valid_css' do
       css = get_file('valid.css')
       css.should be_valid_css
     end
+    
+    it "should validate an empty string" do
+      ''.should be_valid_css
+    end
 
     it "should validate a valid response" do
       response = MockResponse.new(get_file('valid.css'))

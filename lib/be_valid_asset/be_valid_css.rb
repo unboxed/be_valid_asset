@@ -17,6 +17,9 @@ module BeValidAsset
         fragment = fragment.body.to_s
       end
 
+      # The validator return a 500 Error if it's sent empty string
+      fragment = ' ' if fragment.empty?
+
       query_params = { :text => fragment, :profile => @profile }
       return validate(query_params)
     end
