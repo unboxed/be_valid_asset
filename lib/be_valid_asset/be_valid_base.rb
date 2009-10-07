@@ -38,8 +38,8 @@ module BeValidAsset
           @message << "#{error_line_prefix}: line #{e.elements['m:line'].text}: #{e.elements['m:message'].get_text.value.strip}\n"
           if Configuration.display_invalid_lines
             line_no = e.elements['m:line'].text.to_i
-            start_line = [line_no - (Configuration.display_lines_around / 2), 1].max
-            end_line = [line_no + (Configuration.display_lines_around / 2), lines.length].min
+            start_line = [line_no - (Configuration.display_invalid_lines_count / 2), 1].max
+            end_line = [line_no + (Configuration.display_invalid_lines_count / 2), lines.length].min
             for i in start_line..end_line
               @message << "#{'%04i' % i}#{ i == line_no ? '>>' : '  ' }: #{ lines[i - 1] }#{ $/ }"
             end

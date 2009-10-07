@@ -69,6 +69,7 @@ describe 'be_valid_xhtml' do
       end
       after :each do
         BeValidAsset::Configuration.display_invalid_lines = false
+        BeValidAsset::Configuration.display_invalid_lines_count = 5 # Restore the default value
       end
 
       it "should display invalid lines when requested" do
@@ -88,7 +89,7 @@ describe 'be_valid_xhtml' do
       end
 
       it "should display specified invalid lines window when requested" do
-        BeValidAsset::Configuration.display_lines_around = 3
+        BeValidAsset::Configuration.display_invalid_lines_count = 3
         html = get_file('invalid.html')
         lambda do
           html.should be_valid_xhtml
@@ -100,11 +101,10 @@ describe 'be_valid_xhtml' do
           e.message.should match(/0013  :/)
           e.message.should_not match(/0014  :/)
         }
-        BeValidAsset::Configuration.display_lines_around = 5 # Restore the default value
       end
 
       it "should not underrun the beginning of the source" do
-        BeValidAsset::Configuration.display_lines_around = 7
+        BeValidAsset::Configuration.display_invalid_lines_count = 7
         html = get_file('invalid2.html')
         lambda do
           html.should be_valid_xhtml
@@ -114,11 +114,10 @@ describe 'be_valid_xhtml' do
           e.message.should match(/0001  :/)
           e.message.should match(/0003>>:/)
         }
-        BeValidAsset::Configuration.display_lines_around = 5 # Restore the default value
       end
 
       it "should not overrun the end of the source" do
-        BeValidAsset::Configuration.display_lines_around = 11
+        BeValidAsset::Configuration.display_invalid_lines_count = 11
         html = get_file('invalid.html')
         lambda do
           html.should be_valid_xhtml
@@ -128,7 +127,6 @@ describe 'be_valid_xhtml' do
           e.message.should match(/0015  :/)
           e.message.should_not match(/0016  :/)
         }
-        BeValidAsset::Configuration.display_lines_around = 5 # Restore the default value
       end
     end
 
