@@ -14,9 +14,16 @@ or as a plugin
 
     ./script/plugin install git://github.com/unboxed/be_valid_asset.git
 
-Add the following to the configure block in your `spec_helper.rb` file:
+Add the following to the `spec/support/be_valid_asset.rb`:
+(for older version of RSpec you'll need to require it from `spec_helper.rb`)
 
-    config.include BeValidAsset
+    include BeValidAsset
+    
+    # BeValidAsset::Configuration.display_invalid_content = true
+    BeValidAsset::Configuration.enable_caching = true
+    BeValidAsset::Configuration.cache_path = File.join(RAILS_ROOT, %w(tmp be_valid_asset_cache))
+
+See below for details of the configuration options available
 
 Usage
 -----
@@ -105,7 +112,7 @@ If you need to use a proxy server to access the validator service, set the envir
 Configuration
 -------------
 
-There are a few configuration options that can be configured in `spec_helper.rb` as follows:
+The following can be set in `spec/support/be_valid_asset.rb`:
 
 ### Display Full source for failures:
 
