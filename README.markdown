@@ -8,7 +8,7 @@ Installation
 
 To use be\_valid\_asset in your project, install the gem:
 
-    gem install be_valid_asset -s http://gemcutter.org
+    gem install be_valid_asset
 
 or as a plugin
 
