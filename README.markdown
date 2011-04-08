@@ -10,12 +10,12 @@ To use be\_valid\_asset in your project, install the gem:
 
     gem install be_valid_asset
 
-or as a plugin
+or install as a plugin
 
     ./script/plugin install git://github.com/unboxed/be_valid_asset.git
 
 Add the following to the `spec/support/be_valid_asset.rb`:
-(for older version of RSpec you'll need to require it from `spec_helper.rb`)
+(for older versions of RSpec you'll need to require it from `spec_helper.rb`)
 
     include BeValidAsset
     
@@ -134,7 +134,7 @@ This will cause it to output the failing line, and n surrounding lines (defaults
     BeValidAsset::Configuration.feed_validator_host = 'validator.w3.org'
     BeValidAsset::Configuration.feed_validator_path = '/feed/check.cgi'
 
-If you are doing more than the occasional check, you should probably run your own copy of the validator, and use that.
+If you are doing more than the occasional check, you should run your own copy of the validator, and use that.
 Instructions here: [http://validator.w3.org/docs/install.html](http://validator.w3.org/docs/install.html),  [http://jigsaw.w3.org/css-validator/DOWNLOAD.html](http://jigsaw.w3.org/css-validator/DOWNLOAD.html) or [http://validator.w3.org/feed/about.html#where](http://validator.w3.org/feed/about.html#where)
 
 ### Caching
