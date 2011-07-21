@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/unboxed/be_valid_asset}
   s.summary = %q{Markup validation for RSpec}
   s.has_rdoc = false
+  s.authors = ['Alex Tomlins', 'Sebastian de Castelberg', 'Ben Brinckerhoff']
   s.add_dependency('rspec')
 
   # Dir[] is not allowed with $SAFE = 3
