@@ -13,6 +13,7 @@ module BeValidAsset
   
     def initialize(options = {})
       @fragment = options[:fragment]
+      @html5 = options[:html5]
     end
   
     # Assert that markup (html/xhtml) is valid according the W3C validator web service.
@@ -30,8 +31,14 @@ module BeValidAsset
 
       query_params = { :fragment => fragment }
       if @fragment
-        query_params[:prefill] = '1'
-        query_params[:prefill_doctype] = 'xhtml10'
+        if @html5
+          # signal HTML5 through the DOCTYPE
+          query_params[:fragment] = "<!doctype html><html><head><title></title></head><body>" + fragment + "</body></html>"          
+        elsif
+          # specify to validate fragment and as XHTML
+          query_params[:prefill] = '1'
+          query_params[:prefill_doctype] = 'xhtml10'
+        end
       end
 
       return validate(query_params)
@@ -72,4 +79,13 @@ module BeValidAsset
   def be_valid_xhtml_fragment()
     BeValidXhtml.new(:fragment => true)
   end
+
+  def be_valid_html5
+    BeValidXhtml.new(:html5 => true)
+  end
+
+  def be_valid_html5_fragment()
+    BeValidXhtml.new(:html5 => true, :fragment => true)
+  end
+
 end
