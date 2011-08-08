@@ -68,6 +68,7 @@ module BeValidAsset
   def be_valid_xhtml
     BeValidXhtml.new
   end
+  alias :be_valid_html :be_valid_xhtml
   
   def be_valid_xhtml_fragment()
     BeValidXhtml.new(:fragment => true)

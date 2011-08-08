@@ -287,4 +287,8 @@ describe 'be_valid_xhtml' do
       ENV.delete('http_proxy')
     end
   end
+
+  it "should have a be_valid_html alias method" do
+    method(:be_valid_html).should == method(:be_valid_xhtml)
+  end
 end
