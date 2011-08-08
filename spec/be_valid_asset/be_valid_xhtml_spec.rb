@@ -34,8 +34,6 @@ describe 'be_valid_xhtml' do
         e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
         e.message.should match(/Invalid markup: line 12: end tag for "b" omitted, but OMITTAG NO was specified/)
         e.message.should match(/Invalid markup: line 12: end tag for element "b" which is not open/)
-        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: b line 12 and p/)
-        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: p line 12 and b/)
       }
     end
 
@@ -47,8 +45,6 @@ describe 'be_valid_xhtml' do
         e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
         e.message.should match(/Invalid markup: line 12: end tag for "b" omitted, but OMITTAG NO was specified/)
         e.message.should match(/Invalid markup: line 12: end tag for element "b" which is not open/)
-        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: b line 12 and p/)
-        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: p line 12 and b/)
       }
     end
 
@@ -195,8 +191,6 @@ describe 'be_valid_xhtml' do
         e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
         e.message.should match(/Invalid markup: line 12: end tag for "b" omitted, but OMITTAG NO was specified/)
         e.message.should match(/Invalid markup: line 12: end tag for element "b" which is not open/)
-        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: b line 12 and p/)
-        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: p line 12 and b/)
       }
       Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size.should eql(count + 1)
     end
@@ -212,8 +206,6 @@ describe 'be_valid_xhtml' do
         e.message.should match(/expected xhtml to be valid, but validation produced these errors/)
         e.message.should match(/Invalid markup: line 12: end tag for "b" omitted, but OMITTAG NO was specified/)
         e.message.should match(/Invalid markup: line 12: end tag for element "b" which is not open/)
-        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: b line 12 and p/)
-        e.message.should match(/Invalid markup: line 12: XML Parsing Error:  Opening and ending tag mismatch: p line 12 and b/)
       }
     end
 
