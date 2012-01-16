@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 unless defined?(SpecFailed)
-  SpecFailed = Spec::Expectations::ExpectationNotMetError
+  SpecFailed = RSpec::Expectations::ExpectationNotMetError
 end
 
 describe 'be_valid_xhtml' do
@@ -152,7 +152,7 @@ describe 'be_valid_xhtml' do
       html = get_file('valid.html')
       lambda {
         html.should be_valid_xhtml
-      }.should raise_error(Spec::Example::ExamplePendingError)
+      }.should raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
 
       ENV.delete('NONET')
     end
@@ -242,7 +242,7 @@ describe 'be_valid_xhtml' do
       html = get_file('valid.html')
       lambda {
         html.should be_valid_xhtml
-      }.should raise_error(Spec::Example::ExamplePendingError)
+      }.should raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
 
       ENV.delete('NONET')
     end

@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'spec/autorun'
+require 'rspec'
 
 begin
   require 'ruby-debug'
@@ -10,7 +10,7 @@ $: << File.join(File.dirname(__FILE__), %w(.. lib))
 
 require 'be_valid_asset'
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.include BeValidAsset
   
   BeValidAsset::Configuration.cache_path = File.join(File.dirname(__FILE__), 'tmp')

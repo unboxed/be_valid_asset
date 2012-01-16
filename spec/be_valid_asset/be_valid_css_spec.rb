@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 unless defined?(SpecFailed)
-  SpecFailed = Spec::Expectations::ExpectationNotMetError
+  SpecFailed = RSpec::Expectations::ExpectationNotMetError
 end
 
 describe 'be_valid_css' do
@@ -76,7 +76,7 @@ describe 'be_valid_css' do
       css = get_file('valid.css')
       lambda {
         css.should be_valid_css
-      }.should raise_error(Spec::Example::ExamplePendingError)
+      }.should raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
 
       ENV.delete('NONET')
     end
@@ -187,7 +187,7 @@ describe 'be_valid_css' do
       css = get_file('valid.css')
       lambda {
         css.should be_valid_css
-      }.should raise_error(Spec::Example::ExamplePendingError)
+      }.should raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
 
       ENV.delete('NONET')
     end
