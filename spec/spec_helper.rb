@@ -23,10 +23,14 @@ end
 
 class MockResponse
   def initialize(body_text)
-    @body = body_text
+    @source = @body = body_text
   end
   
   def body
     @body
+  end
+  
+  def source
+    @source
   end
 end
