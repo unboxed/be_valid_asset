@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 unless defined?(SpecFailed)
-  SpecFailed = Spec::Expectations::ExpectationNotMetError
+  SpecFailed = RSpec::Expectations::ExpectationNotMetError
 end
 
 describe 'be_valid_feed' do
@@ -82,7 +82,7 @@ describe 'be_valid_feed' do
       feed = get_file('valid_feed.xml')
       lambda {
         feed.should be_valid_feed
-      }.should raise_error(Spec::Example::ExamplePendingError)
+      }.should raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
 
       ENV.delete('NONET')
     end
@@ -170,7 +170,7 @@ describe 'be_valid_feed' do
       feed = get_file('valid_feed.xml')
       lambda {
         feed.should be_valid_feed
-      }.should raise_error(Spec::Example::ExamplePendingError)
+      }.should raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
 
       ENV.delete('NONET')
     end
