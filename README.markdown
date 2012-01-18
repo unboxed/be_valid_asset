@@ -59,11 +59,11 @@ or to test a string:
       html.should be_valid_markup
     end
 
-It is also possible to validate an xhtml fragment.  This assumes xhtml-1.0 strict.
+It is also possible to validate an html fragment.  This assumes xhtml-1.0 strict.
 
-    it "should be valid xhtml" do
+    it "should be valid html" do
       string = "<p>This is an html fragment</p>"
-      string.should be_valid_xhtml_fragment
+      string.should be_valid_markup_fragment
     end
 
 ### CSS validation

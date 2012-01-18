@@ -22,6 +22,16 @@ describe 'be_valid_markup' do
       response.should be_valid_markup
     end
 
+    it "should validate a valid html5 response when only 'source' is available" do
+      response = mock(:source => get_file('valid.html5'))
+      response.should be_valid_markup
+    end
+    
+    it "should validate a valid html5 response when only 'body' is available" do
+      response = mock(:body => get_file('valid.html5'))
+      response.should be_valid_markup
+    end
+
     it "should validate if body is not a string but can be converted to valid string" do
       response = MockResponse.new(stub("XHTML", :to_s => get_file('valid.html')))
       response.should be_valid_markup

@@ -21,6 +21,8 @@ module BeValidAsset
 
       if fragment.respond_to? :source
         fragment = fragment.source.to_s
+      elsif fragment.respond_to? :body
+        fragment = fragment.body.to_s
       end
           
       if fragment.empty?
