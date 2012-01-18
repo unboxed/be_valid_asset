@@ -1,7 +1,7 @@
 be\_valid\_asset
 ==============
 
-Provides `be_valid_markup`, `be_valid_xhtml`, `be_valid_css` and `be_valid_feed` matchers for rspec controller and view tests.
+Provides `be_valid_markup`, `be_valid_css` and `be_valid_feed` matchers for rspec controller and view tests.
 
 Installation
 ------------
@@ -83,7 +83,7 @@ be\_valid\_css takes an optional parameter specifying the css profile to test ag
 
 ### Feed validation
 
-RSS and Atom feeds can be validated from a response, or a string, in the same way as for xhtml or CSS.  e.g.
+RSS and Atom feeds can be validated from a response, or a string, in the same way as for html or CSS.  e.g.
 
     describe FooController do
       integrate_views
