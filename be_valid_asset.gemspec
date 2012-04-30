@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
     lib/be_valid_asset.rb
     spec/be_valid_asset/be_valid_css_spec.rb
     spec/be_valid_asset/be_valid_feed_spec.rb
-    spec/be_valid_asset/be_valid_xhtml_spec.rb
+    spec/be_valid_asset/be_valid_markup_spec.rb
     spec/spec_helper.rb
     spec/files/invalid.css
     spec/files/invalid.html
@@ -42,12 +42,13 @@ Gem::Specification.new do |s|
     spec/files/valid-3.css
     spec/files/valid.css
     spec/files/valid.html
+    spec/files/valid.html5
     spec/files/valid_feed.xml
     spec/spec.opts
   )
   s.test_files = %w(
     spec/be_valid_asset/be_valid_css_spec.rb
     spec/be_valid_asset/be_valid_feed_spec.rb
-    spec/be_valid_asset/be_valid_xhtml_spec.rb
+    spec/be_valid_asset/be_valid_markup_spec.rb
   )
 end

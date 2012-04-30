@@ -8,7 +8,7 @@ module BeValidAsset
 
       def check_net_enabled
         if ENV["NONET"] == 'true'
-          raise Spec::Example::ExamplePendingError.new('Network tests disabled')
+          raise RSpec::Core::Pending::PendingDeclaredInExample.new('Network tests disabled')
         end
       end
 
