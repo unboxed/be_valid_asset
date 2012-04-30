@@ -1,7 +1,7 @@
 be\_valid\_asset
 ==============
 
-Provides `be_valid_xhtml`, `be_valid_css` and `be_valid_feed` matchers for rspec controller and view tests.
+Provides `be_valid_markup`, `be_valid_css` and `be_valid_feed` matchers for rspec controller and view tests.
 
 Installation
 ------------
@@ -28,7 +28,7 @@ See below for details of the configuration options available
 Usage
 -----
 
-### (X)HTML validation
+### Markup validation
 
 It can be used to test either an ActionController Response object as follows:
 
@@ -38,7 +38,7 @@ It can be used to test either an ActionController Response object as follows:
       describe "GET 'index'" do
         it "should have valid markup" do
           get 'index'
-          response.should be_valid_xhtml
+          response.should be_valid_markup
         end
       end
     end
@@ -46,24 +46,24 @@ It can be used to test either an ActionController Response object as follows:
 or
 
     describe "/index.html" do
-      it "should be valid XHTML" do
+      it "should be valid markup" do
         render 'home/index', :layout => true
-        response.should be_valid_xhtml
+        response.should be_valid_markup
       end
     end
 
 or to test a string:
 
-    it "should be valid xhtml" do
+    it "should be valid markup" do
       html = File.read(File.join(RAILS_ROOT, %w(public index.html)))
-      html.should be_valid_xhtml
+      html.should be_valid_markup
     end
 
-It is also possible to validate an xhtml fragment.  This assumes xhtml-1.0 strict.
+It is also possible to validate an html fragment.  This assumes xhtml-1.0 strict.
 
-    it "should be valid xhtml" do
+    it "should be valid html" do
       string = "<p>This is an html fragment</p>"
-      string.should be_valid_xhtml_fragment
+      string.should be_valid_markup_fragment
     end
 
 ### CSS validation
@@ -83,7 +83,7 @@ be\_valid\_css takes an optional parameter specifying the css profile to test ag
 
 ### Feed validation
 
-RSS and Atom feeds can be validated from a response, or a string, in the same way as for xhtml or CSS.  e.g.
+RSS and Atom feeds can be validated from a response, or a string, in the same way as for html or CSS.  e.g.
 
     describe FooController do
       integrate_views
