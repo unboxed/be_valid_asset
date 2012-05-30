@@ -1,10 +1,11 @@
 require 'rake'
 # require 'rake/rdoctask'
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 
+# RSpec 2.0
 task :default => :spec
-Spec::Rake::SpecTask.new do |t|
-  t.spec_opts = ['--options', File.join(File.dirname(__FILE__), %w(spec spec.opts))]
+RSpec::Core::RakeTask.new do |spec|
+  spec.rspec_opts = ['--options', File.join(File.dirname(__FILE__), %w(spec spec.opts))]
 end
 
 # desc 'Generate documentation for the be_valid_asset plugin.'
