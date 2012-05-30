@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
     lib/be_valid_asset/be_valid_base.rb
     lib/be_valid_asset/be_valid_css.rb
     lib/be_valid_asset/be_valid_feed.rb
-    ib/be_valid_asset/be_valid_markup.rb
+    lib/be_valid_asset/be_valid_markup.rb
     lib/be_valid_asset/be_valid_xhtml.rb
     lib/be_valid_asset.rb
     spec/be_valid_asset/be_valid_css_spec.rb
