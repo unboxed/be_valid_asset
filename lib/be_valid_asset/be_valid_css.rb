@@ -20,7 +20,7 @@ module BeValidAsset
       # The validator return a 500 Error if it's sent empty string
       fragment = ' ' if fragment.empty?
 
-      query_params = { :text => fragment, :profile => @profile }
+      query_params = { :text => fragment, :profile => @profile, :vextwarning => 'true' }
       return validate(query_params)
     end
   
