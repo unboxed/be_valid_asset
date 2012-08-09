@@ -135,7 +135,7 @@ This will cause it to output the failing line, and n surrounding lines (defaults
     BeValidAsset::Configuration.feed_validator_path = '/feed/check.cgi'
 
 If you are doing more than the occasional check, you should run your own copy of the validator, and use that.
-Instructions here: [http://validator.w3.org/docs/install.html](http://validator.w3.org/docs/install.html),  [http://jigsaw.w3.org/css-validator/DOWNLOAD.html](http://jigsaw.w3.org/css-validator/DOWNLOAD.html) or [http://validator.w3.org/feed/about.html#where](http://validator.w3.org/feed/about.html#where)
+Instructions here: [http://validator.w3.org/docs/install.html](http://validator.w3.org/docs/install.html),  [http://jigsaw.w3.org/css-validator/DOWNLOAD.html](http://jigsaw.w3.org/css-validator/DOWNLOAD.html) or [https://github.com/w3c/css-validator-standalone](https://github.com/w3c/css-validator-standalone) and [http://validator.w3.org/feed/about.html#where](http://validator.w3.org/feed/about.html#where)
 
 ### Caching
 
