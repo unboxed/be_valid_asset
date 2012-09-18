@@ -32,7 +32,7 @@ Usage
 
 It can be used to test a Capybara Session object in a request spec as follows:
 
-    scenarion "Visiting foo and validate markup" do
+    scenario "Visiting foo and validate markup" do
       visit foo_path
       page.should be_valid_markup
     end
@@ -53,7 +53,7 @@ or an ActionController Response object:
 or to test a string:
 
     it "should be valid markup" do
-      html = File.read(File.join(RAILS_ROOT, %w(public index.html)))
+      html = File.read(Rails.root.join('public', 'index.html'))
       html.should be_valid_markup
     end
 
@@ -69,7 +69,7 @@ It is also possible to validate an html fragment.  This assumes xhtml-1.0 strict
 CSS files can be validated as follows:
 
     it "should be valid CSS" do
-      css = File.read(File.join(RAILS_ROOT, %w(public stylesheets main.css)))
+      css = File.read(Rails.root.join('public', 'stylesheets', 'main.css'))
       css.should be_valid_css
     end
 
