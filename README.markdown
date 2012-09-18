@@ -30,25 +30,23 @@ Usage
 
 ### Markup validation
 
-It can be used to test either an ActionController Response object as follows:
+It can be used to test a Capybara Session object in a request spec as follows:
+
+    scenarion "Visiting foo and validate markup" do
+      visit foo_path
+      page.should be_valid_markup
+    end
+
+or an ActionController Response object as follows:
 
     describe FooController do
-      integrate_views
+      render_views
 
       describe "GET 'index'" do
         it "should have valid markup" do
           get 'index'
           response.should be_valid_markup
         end
-      end
-    end
-
-or
-
-    describe "/index.html" do
-      it "should be valid markup" do
-        render 'home/index', :layout => true
-        response.should be_valid_markup
       end
     end
 
