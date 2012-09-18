@@ -143,7 +143,7 @@ be\_valid\_asset can cache the responses from the validator to save look-ups for
 To use this feature, it must be enabled, and a cache path must be set:
 
     BeValidAsset::Configuration.enable_caching = true
-    BeValidAsset::Configuration.cache_path = File.join(RAILS_ROOT, %w(tmp be_valid_asset_cache))
+    BeValidAsset::Configuration.cache_path = Rails.root.join('tmp', 'be_valid_asset_cache')
 
 Issues / Feature Requests
 -------------------------
