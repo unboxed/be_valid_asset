@@ -37,7 +37,7 @@ It can be used to test a Capybara Session object in a request spec as follows:
       page.should be_valid_markup
     end
 
-or an ActionController Response object as follows:
+or an ActionController Response object:
 
     describe FooController do
       render_views
