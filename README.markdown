@@ -145,7 +145,7 @@ To use this feature, it must be enabled, and a cache path must be set:
     BeValidAsset::Configuration.enable_caching = true
     BeValidAsset::Configuration.cache_path = File.join(RAILS_ROOT, %w(tmp be_valid_asset_cache))
 
-By default, cache busters for `href` and `src` attribute values are stripped ie `/images/test.jpg?8171717` is cached as `/images/test.jpg`. If this is not required, add the following to the configuration file:
+By default, cache busters for `href` and `src` attribute values are stripped eg `src="/images/test.jpg?8171717"` is cached as `src="/images/test.jpg"`. If this is unwanted, add the following to the configuration file:
 
     BeValidAsset::Configuration.markup_cache_modifiers = []
 
