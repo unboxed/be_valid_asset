@@ -84,7 +84,7 @@ be\_valid\_css takes an optional parameter specifying the css profile to test ag
 RSS and Atom feeds can be validated from a response, or a string, in the same way as for html or CSS.  e.g.
 
     describe FooController do
-      integrate_views
+      render_views
 
       describe "GET 'index.rss'" do
         it "should be valid" do
