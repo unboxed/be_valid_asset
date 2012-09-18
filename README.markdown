@@ -145,6 +145,16 @@ To use this feature, it must be enabled, and a cache path must be set:
     BeValidAsset::Configuration.enable_caching = true
     BeValidAsset::Configuration.cache_path = File.join(RAILS_ROOT, %w(tmp be_valid_asset_cache))
 
+By default, cache busters for href and src attribute values are stripped ie `/images/test.jpg?8171717` is cached as `/images/test.jpg`. If this is not required, add the following to the configuration file:
+
+    BeValidAsset::Configuration.markup_cache_modifiers = []
+
+### Markup modification prior to validation
+
+There may be elements of your markup that causes validation to fail. If you want to ignore specific markup that causes failures but validate the rest, regular expressions can be used to modify the markup prior to validation. Ideally this would not be necessary, but with emerging standards like the [HTML Responsive Images Extension](http://dvcs.w3.org/hg/html-proposals/raw-file/tip/responsive-images/responsive-images.html) sometimes it is potentially the best solution until the markup validator is updated. If you are using the `srcset` attribute on an `img` tag and want to remove it prior to validation, set the following configuration:
+
+    BeValidAsset::Configuration.markup_modifiers = [[/ srcset=".*"/, '']]
+
 Issues / Feature Requests
 -------------------------
 

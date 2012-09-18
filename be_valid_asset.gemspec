@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
 
   s.name = %q{be_valid_asset}
-  s.version = "1.2.2"
+  s.version = "1.2.3"
 
   s.description = %q{Provides be_valid_markup, be_valid_css and be_valid_feed matchers for rspec controller and view tests.}
   s.email = %q{github@unboxedconsulting.com}
@@ -34,6 +34,8 @@ Gem::Specification.new do |s|
     spec/be_valid_asset/be_valid_feed_spec.rb
     spec/be_valid_asset/be_valid_markup_spec.rb
     spec/spec_helper.rb
+    spec/files/html_with_srcset.html
+    spec/files/html_without_srcset.html
     spec/files/invalid.css
     spec/files/invalid.html
     spec/files/invalid2.html
@@ -45,6 +47,8 @@ Gem::Specification.new do |s|
     spec/files/valid.html
     spec/files/valid.html5
     spec/files/valid_feed.xml
+    spec/files/valid_with_cache_busters.html
+    spec/files/valid_without_cache_busters.html
     spec/spec.opts
   )
   s.test_files = %w(
