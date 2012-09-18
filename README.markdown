@@ -21,7 +21,7 @@ Add the following to the `spec/support/be_valid_asset.rb`:
     
     # BeValidAsset::Configuration.display_invalid_content = true
     BeValidAsset::Configuration.enable_caching = true
-    BeValidAsset::Configuration.cache_path = File.join(RAILS_ROOT, %w(tmp be_valid_asset_cache))
+    BeValidAsset::Configuration.cache_path = Rails.root.join('tmp', 'be_valid_asset_cache')
 
 See below for details of the configuration options available
 
