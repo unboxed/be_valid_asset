@@ -261,6 +261,40 @@ describe 'be_valid_markup' do
 
       ENV.delete('NONET')
     end
+
+    describe "with default modifiers" do
+      it "should strip off cache busters for href and src attributes" do
+        html = get_file('valid_with_cache_busters.html')
+        html_modified = get_file('valid_without_cache_busters.html')
+        be_valid_markup = BeValidAsset::BeValidMarkup.new
+        be_valid_markup.should_receive(:validate).with({:fragment => html_modified})
+        be_valid_markup.matches?(html)
+      end
+
+      it "should not strip off cache busters if caching isn't enabled" do
+        BeValidAsset::Configuration.enable_caching = false
+        html = get_file('valid_with_cache_busters.html')
+        be_valid_markup = BeValidAsset::BeValidMarkup.new
+        be_valid_markup.should_receive(:validate).with({:fragment => html})
+        be_valid_markup.matches?(html)
+      end
+    end
+  end
+
+  describe "markup modification" do
+    before :each do
+      BeValidAsset::Configuration.markup_modifiers = [[/ srcset=".*"/, '']]
+    end
+    after :each do
+      BeValidAsset::Configuration.markup_modifiers = []
+    end
+    it "should apply modification" do
+      html = get_file('html_with_srcset.html')
+      html_modified = get_file('html_without_srcset.html')
+      be_valid_markup = BeValidAsset::BeValidMarkup.new
+      be_valid_markup.should_receive(:validate).with({:fragment => html_modified})
+      be_valid_markup.matches?(html)
+    end
   end
 
   describe "Proxying" do
