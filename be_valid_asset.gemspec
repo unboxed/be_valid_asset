@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.name          = "be_valid_asset"
   gem.version       = BeValidAsset::VERSION
   gem.authors       = ["Alex Tomlins", "Attila Gyorffy", "Ben Brinckerhoff", "Jolyon Pawlyn", "Sebastian de Castelberg"]
-  gem.email         = ["attila@attilagyorffy.com"]
+  gem.email         = ["github@unboxedconsulting.com"]
   gem.description   = %q{Provides be_valid_markup, be_valid_css and be_valid_feed matchers for RSpec controller and view tests.}
   gem.summary       = %q{Markup and asset validation for RSpec}
   gem.homepage      = "http://github.com/unboxed/be_valid_asset"
