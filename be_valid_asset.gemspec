@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Provides be_valid_markup, be_valid_css and be_valid_feed matchers for RSpec controller and view tests.}
   gem.summary       = %q{Markup and asset validation for RSpec}
   gem.homepage      = "http://github.com/unboxed/be_valid_asset"
+  gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
