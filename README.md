@@ -22,12 +22,12 @@ Add the following to `spec/support/be_valid_asset.rb`:
 
 ```ruby
 include BeValidAsset
-    
+
 BeValidAsset::Configuration.display_invalid_content = true
 BeValidAsset::Configuration.enable_caching = true
 BeValidAsset::Configuration.cache_path = Rails.root.join('tmp', 'be_valid_asset_cache')
 ```
-    
+
 Note: For older versions of RSpec you'll need to require `be_valid_asset.rb` from `spec_helper.rb`.
 
 ## Usage
@@ -48,7 +48,7 @@ or an ActionController Response object:
 ```ruby
 describe FooController do
   render_views
-  
+
   describe "GET 'index'" do
     it "renders valid markup" do
       get :index
@@ -189,4 +189,4 @@ Please use the [Github issue tracker](http://github.com/unboxed/be_valid_asset/i
 
 This was originally based on a blog post here: [http://www.anodyne.ca/2007/09/28/rspec-custom-matchers-and-be\_valid\_xhtml/](http://www.anodyne.ca/2007/09/28/rspec-custom-matchers-and-be_valid_xhtml/)
 
-This is distributed under the MIT Licence, see `MIT-LICENSE.txt` for the details.
+This is distributed under the MIT Licence, see `LICENSE.txt` for the details.
