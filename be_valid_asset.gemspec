@@ -1,59 +1,22 @@
-Gem::Specification.new do |s|
+# -*- encoding: utf-8 -*-
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'be_valid_asset/version'
 
-  s.name = %q{be_valid_asset}
-  s.version = "1.2.3"
+Gem::Specification.new do |gem|
+  gem.name          = "be_valid_asset"
+  gem.version       = BeValidAsset::VERSION
+  gem.authors       = ["Alex Tomlins", "Attila Gyorffy", "Ben Brinckerhoff", "Jolyon Pawlyn", "Sebastian de Castelberg"]
+  gem.email         = ["github@unboxedconsulting.com"]
+  gem.description   = %q{Provides be_valid_markup, be_valid_css and be_valid_feed matchers for RSpec controller and view tests.}
+  gem.summary       = %q{Markup and asset validation for RSpec}
+  gem.homepage      = "http://github.com/unboxed/be_valid_asset"
+  gem.license       = "MIT"
 
-  s.description = %q{Provides be_valid_markup, be_valid_css and be_valid_feed matchers for rspec controller and view tests.}
-  s.email = %q{github@unboxedconsulting.com}
-  s.homepage = %q{http://github.com/unboxed/be_valid_asset}
-  s.summary = %q{Markup validation for RSpec}
-  s.has_rdoc = false
-  s.authors = ['Alex Tomlins', 'Sebastian de Castelberg', 'Ben Brinckerhoff']
-  s.add_dependency('rspec')
+  gem.files         = `git ls-files`.split($/)
+  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.require_paths = ["lib"]
 
-  # Dir[] is not allowed with $SAFE = 3
-#  s.files = [
-#    %w(Rakefile README.markdown MIT-LICENSE.txt),
-#    Dir['lib/**/*.rb'],
-#    Dir['spec/**/*.rb'],
-#    Dir['spec/files/*'],
-#    %w(spec/spec.opts)
-#  ].flatten
-#  puts s.files
-  s.files = %w(
-    Rakefile
-    README.markdown
-    MIT-LICENSE.txt
-    lib/be_valid_asset/be_valid_base.rb
-    lib/be_valid_asset/be_valid_css.rb
-    lib/be_valid_asset/be_valid_feed.rb
-    lib/be_valid_asset/be_valid_markup.rb
-    lib/be_valid_asset/be_valid_xhtml.rb
-    lib/be_valid_asset.rb
-    spec/be_valid_asset/be_valid_css_spec.rb
-    spec/be_valid_asset/be_valid_feed_spec.rb
-    spec/be_valid_asset/be_valid_markup_spec.rb
-    spec/spec_helper.rb
-    spec/files/html_with_srcset.html
-    spec/files/html_without_srcset.html
-    spec/files/invalid.css
-    spec/files/invalid.html
-    spec/files/invalid2.html
-    spec/files/invalid_feed.xml
-    spec/files/valid-1.css
-    spec/files/valid-2.css
-    spec/files/valid-3.css
-    spec/files/valid.css
-    spec/files/valid.html
-    spec/files/valid.html5
-    spec/files/valid_feed.xml
-    spec/files/valid_with_cache_busters.html
-    spec/files/valid_without_cache_busters.html
-    spec/spec.opts
-  )
-  s.test_files = %w(
-    spec/be_valid_asset/be_valid_css_spec.rb
-    spec/be_valid_asset/be_valid_feed_spec.rb
-    spec/be_valid_asset/be_valid_markup_spec.rb
-  )
+  gem.add_dependency('rspec')
 end
