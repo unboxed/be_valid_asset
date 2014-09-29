@@ -86,7 +86,13 @@ module BeValidAsset
       end
       
       def http_start(host)
-        if ENV['http_proxy']
+        if host.include? 'https://'
+          url = URI.parse host
+          http = Net::HTTP.new url.host, url.port
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          http.use_ssl = true
+          http.start
+        elsif ENV['http_proxy']
           uri = URI.parse(ENV['http_proxy'])
           proxy_user, proxy_pass = uri.userinfo.split(/:/) if uri.userinfo
           Net::HTTP.start(host, nil, uri.host, uri.port, proxy_user, proxy_pass)
