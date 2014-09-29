@@ -54,7 +54,9 @@ module BeValidAsset
     def failure_message_when_negated
       " expected to not be valid, but was (missing validation?)"
     end
-  
+    # continue to support Rspec < 3
+    alias :negative_failure_message :failure_message_when_negated
+
     private
 
       def apply_modifiers_to_fragment(fragment)
