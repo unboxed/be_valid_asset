@@ -305,7 +305,7 @@ describe 'be_valid_markup' do
       allow(@http).to receive(:post2).and_return(r)
 
       @html = MockResponse.new(get_file('valid.html'))
-      BeValidAsset::Configuration.stub(:markup_validator_host => 'http://validator.example.com:1234')
+      allow(BeValidAsset::Configuration).to receive_messages(:markup_validator_host => 'http://validator.example.com:1234')
     end
 
     it "should use direct http without ENV['http_proxy']" do
