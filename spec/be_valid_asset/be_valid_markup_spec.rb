@@ -16,7 +16,7 @@ describe 'be_valid_markup' do
       response = MockResponse.new(get_file('valid.html'))
       response.should be_valid_markup
     end
-    
+
     it "should validate a valid html5 response" do
       response = MockResponse.new(get_file('valid.html5'))
       response.should be_valid_markup
@@ -26,7 +26,7 @@ describe 'be_valid_markup' do
       response = mock(:source => get_file('valid.html5'))
       response.should be_valid_markup
     end
-    
+
     it "should validate a valid html5 response when only 'body' is available" do
       response = mock(:body => get_file('valid.html5'))
       response.should be_valid_markup

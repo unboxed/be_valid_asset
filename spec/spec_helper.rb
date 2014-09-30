@@ -12,7 +12,7 @@ require 'be_valid_asset'
 
 RSpec.configure do |config|
   config.include BeValidAsset
-  
+
   BeValidAsset::Configuration.cache_path = File.join(File.dirname(__FILE__), 'tmp')
 end
 
@@ -25,11 +25,11 @@ class MockResponse
   def initialize(body_text)
     @source = @body = body_text
   end
-  
+
   def body
     @body
   end
-  
+
   def source
     @source
   end

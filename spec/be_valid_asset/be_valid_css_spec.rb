@@ -5,13 +5,13 @@ unless defined?(SpecFailed)
 end
 
 describe 'be_valid_css' do
-  
+
   describe "without caching" do
     it "should validate a valid string" do
       css = get_file('valid.css')
       css.should be_valid_css
     end
-    
+
     it "should validate an empty string" do
       ''.should be_valid_css
     end
@@ -92,7 +92,7 @@ describe 'be_valid_css' do
               it "should not be valid css#{test_version.to_s}" do
                 lambda {
                   @css.should send("be_valid_css#{test_version.to_s}".to_sym)
-                  }.should raise_error(SpecFailed)
+                }.should raise_error(SpecFailed)
               end
             else
               it "should be valid css#{test_version.to_s}" do
@@ -104,7 +104,7 @@ describe 'be_valid_css' do
       end
     end
   end
-  
+
   describe "with caching" do
     before(:each) do
       BeValidAsset::Configuration.enable_caching = true

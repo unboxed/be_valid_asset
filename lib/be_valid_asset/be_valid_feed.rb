@@ -25,7 +25,7 @@ module BeValidAsset
     end
 
     def failure_message
-     " expected feed to be valid, but validation produced these errors:\n#{@message}"
+      " expected feed to be valid, but validation produced these errors:\n#{@message}"
     end
 
     def failure_message_when_negated

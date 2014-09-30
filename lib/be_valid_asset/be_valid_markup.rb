@@ -12,13 +12,13 @@ module BeValidAsset
   Configuration.markup_modifiers = []
 
   class BeValidMarkup < BeValidBase
-  
+
     def initialize(options = {})
       @fragment = options[:fragment]
     end
-  
+
     # Assert that markup (html/xhtml) is valid according the W3C validator web service.
-  
+
     def matches?(fragment)
 
       if fragment.respond_to? :source
@@ -39,16 +39,16 @@ module BeValidAsset
         query_params[:prefill] = '1'
         query_params[:prefill_doctype] = 'xhtml10'
       end
-      
+
       return validate(query_params)
     end
-  
+
     def description
       "be valid markup"
     end
-  
+
     def failure_message
-     " expected markup to be valid, but validation produced these errors:\n#{@message}"
+      " expected markup to be valid, but validation produced these errors:\n#{@message}"
     end
 
     def failure_message_when_negated
@@ -94,7 +94,7 @@ module BeValidAsset
   def be_valid_markup
     BeValidMarkup.new
   end
-  
+
   def be_valid_markup_fragment()
     BeValidMarkup.new(:fragment => true)
   end
