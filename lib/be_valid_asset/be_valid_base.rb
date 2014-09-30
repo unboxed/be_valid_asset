@@ -89,6 +89,7 @@ module BeValidAsset
 
       def http_start(host)
         uri = URI.parse(host)
+        uri = URI.parse("http://#{host}") if uri.scheme.nil?
         if uri.scheme == 'https'
           http = Net::HTTP.new uri.host, uri.port
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE

@@ -297,6 +297,37 @@ RSpec.describe 'be_valid_markup' do
     end
   end
 
+  describe 'host and path configuration' do
+    let(:response) { Net::HTTPSuccess.new('1.1', 200, 'HTTPOK').tap { |r| r['x-w3c-validator-status'] = 'Valid' } }
+    let(:http) { double('HTTP', :post2 => response) }
+    let(:html) { MockResponse.new(get_file('valid.html')) }
+
+    it "parses the domain and port out of the host configuration" do
+      allow(BeValidAsset::Configuration).to receive_messages(:markup_validator_host => 'http://validator.example.com:1234')
+
+      expect(Net::HTTP).to receive(:start).with('validator.example.com', 1234).and_return(http)
+      expect(html).to be_valid_markup
+    end
+
+    it "forces http if no protocol is specificed in the host configuration" do
+      allow(BeValidAsset::Configuration).to receive_messages(:markup_validator_host => 'validator.example.com')
+
+      expect(Net::HTTP).to receive(:start).with('validator.example.com', 80).and_return(http)
+      expect(html).to be_valid_markup
+    end
+
+    it "configures net/http to use ssl if https is specificed in the host configuration" do
+      allow(BeValidAsset::Configuration).to receive_messages(:markup_validator_host => 'https://validator.example.com')
+
+      ssl_connection = double('Net/HTTP SSL')
+      expect(Net::HTTP).to receive(:new).with('validator.example.com', 443).and_return(ssl_connection)
+      expect(ssl_connection).to receive(:verify_mode=).with(OpenSSL::SSL::VERIFY_NONE)
+      expect(ssl_connection).to receive(:use_ssl=).with(true)
+      expect(ssl_connection).to receive(:start).and_return(http)
+      expect(html).to be_valid_markup
+    end
+  end
+
   describe "Proxying" do
     before :each do
       r = Net::HTTPSuccess.new('1.1', 200, 'HTTPOK')
