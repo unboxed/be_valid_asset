@@ -4,7 +4,7 @@ unless defined?(SpecFailed)
   SpecFailed = RSpec::Expectations::ExpectationNotMetError
 end
 
-describe 'be_valid_css' do
+RSpec.describe 'be_valid_css' do
 
   describe "without caching" do
     it "should validate a valid string" do

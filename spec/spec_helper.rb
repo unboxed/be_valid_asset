@@ -11,6 +11,7 @@ $: << File.join(File.dirname(__FILE__), %w(.. lib))
 require 'be_valid_asset'
 
 RSpec.configure do |config|
+  config.disable_monkey_patching!
   config.include BeValidAsset
 
   BeValidAsset::Configuration.cache_path = File.join(File.dirname(__FILE__), 'tmp')

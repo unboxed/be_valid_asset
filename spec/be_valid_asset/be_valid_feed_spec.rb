@@ -4,7 +4,7 @@ unless defined?(SpecFailed)
   SpecFailed = RSpec::Expectations::ExpectationNotMetError
 end
 
-describe 'be_valid_feed' do
+RSpec.describe 'be_valid_feed' do
 
   describe "without caching" do
     it "should validate a valid string" do
