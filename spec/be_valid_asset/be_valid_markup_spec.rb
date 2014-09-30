@@ -305,17 +305,18 @@ describe 'be_valid_markup' do
       @http.stub!(:post2).and_return(r)
 
       @html = MockResponse.new(get_file('valid.html'))
+      BeValidAsset::Configuration.stub(:markup_validator_host => 'http://validator.example.com:1234')
     end
 
     it "should use direct http without ENV['http_proxy']" do
       ENV.delete('http_proxy')
-      Net::HTTP.should_receive(:start).with(BeValidAsset::Configuration.markup_validator_host).and_return(@http)
+      Net::HTTP.should_receive(:start).with('validator.example.com', 1234).and_return(@http)
       @html.should be_valid_markup
     end
 
     it "should use proxied http connection with ENV['http_proxy']" do
       ENV['http_proxy'] = "http://user:pw@localhost:3128"
-      Net::HTTP.should_receive(:start).with(BeValidAsset::Configuration.markup_validator_host, nil, 'localhost', 3128, "user", "pw").and_return(@http)
+      Net::HTTP.should_receive(:start).with('validator.example.com', 1234, 'localhost', 3128, "user", "pw").and_return(@http)
       @html.should be_valid_markup
       ENV.delete('http_proxy')
     end

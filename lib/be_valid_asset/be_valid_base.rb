@@ -84,20 +84,20 @@ module BeValidAsset
         ret << "\r\n--#{boundary}--\r\n"
         ret
       end
-      
+
       def http_start(host)
-        if host.include? 'https://'
-          url = URI.parse host
-          http = Net::HTTP.new url.host, url.port
+        uri = URI.parse(host)
+        if uri.scheme == 'https'
+          http = Net::HTTP.new uri.host, uri.port
           http.verify_mode = OpenSSL::SSL::VERIFY_NONE
           http.use_ssl = true
           http.start
         elsif ENV['http_proxy']
-          uri = URI.parse(ENV['http_proxy'])
-          proxy_user, proxy_pass = uri.userinfo.split(/:/) if uri.userinfo
-          Net::HTTP.start(host, nil, uri.host, uri.port, proxy_user, proxy_pass)
+          proxy_uri = URI.parse(ENV['http_proxy'])
+          proxy_user, proxy_pass = proxy_uri.userinfo.split(/:/) if proxy_uri.userinfo
+          Net::HTTP.start(uri.host, uri.port, proxy_uri.host, proxy_uri.port, proxy_user, proxy_pass)
         else
-          Net::HTTP.start(host)
+          Net::HTTP.start(uri.host, uri.port)
         end
       end
   end
