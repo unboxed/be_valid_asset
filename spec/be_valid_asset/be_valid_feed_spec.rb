@@ -82,7 +82,7 @@ describe 'be_valid_feed' do
       feed = get_file('valid_feed.xml')
       expect {
         expect(feed).to be_valid_feed
-      }.to raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
+      }.to raise_error(BeValidAsset::DontRunValidAssetSpecs)
 
       ENV.delete('NONET')
     end
@@ -170,7 +170,7 @@ describe 'be_valid_feed' do
       feed = get_file('valid_feed.xml')
       expect {
         expect(feed).to be_valid_feed
-      }.to raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
+      }.to raise_error(BeValidAsset::DontRunValidAssetSpecs)
 
       ENV.delete('NONET')
     end

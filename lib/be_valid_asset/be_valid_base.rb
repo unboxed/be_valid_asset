@@ -1,6 +1,8 @@
 
 module BeValidAsset
 
+  DontRunValidAssetSpecs = (defined? RSpec::Core::Pending::SkipDeclaredInExample) ? RSpec::Core::Pending::SkipDeclaredInExample : RSpec::Core::Pending::PendingDeclaredInExample
+
   # Abstract base class for other matchers
   class BeValidBase
 
@@ -8,7 +10,7 @@ module BeValidAsset
 
       def check_net_enabled
         if ENV["NONET"] == 'true'
-          raise RSpec::Core::Pending::PendingDeclaredInExample.new('Network tests disabled')
+          raise BeValidAsset::DontRunValidAssetSpecs.new('Network tests disabled')
         end
       end
 

@@ -167,7 +167,7 @@ describe 'be_valid_markup' do
       html = get_file('valid.html')
       expect {
         expect(html).to be_valid_markup
-      }.to raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
+      }.to raise_error(BeValidAsset::DontRunValidAssetSpecs)
 
       ENV.delete('NONET')
     end
@@ -257,7 +257,7 @@ describe 'be_valid_markup' do
       html = get_file('valid.html')
       expect {
         expect(html).to be_valid_markup
-      }.to raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
+      }.to raise_error(BeValidAsset::DontRunValidAssetSpecs)
 
       ENV.delete('NONET')
     end

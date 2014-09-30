@@ -76,7 +76,7 @@ describe 'be_valid_css' do
       css = get_file('valid.css')
       expect {
         expect(css).to be_valid_css
-      }.to raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
+      }.to raise_error(BeValidAsset::DontRunValidAssetSpecs)
 
       ENV.delete('NONET')
     end
@@ -187,7 +187,7 @@ describe 'be_valid_css' do
       css = get_file('valid.css')
       expect {
         expect(css).to be_valid_css
-      }.to raise_error(RSpec::Core::Pending::PendingDeclaredInExample)
+      }.to raise_error(BeValidAsset::DontRunValidAssetSpecs)
 
       ENV.delete('NONET')
     end
