@@ -1,3 +1,4 @@
+require 'rspec'
 
 module BeValidAsset
 
