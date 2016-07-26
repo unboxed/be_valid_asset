@@ -10,14 +10,6 @@ To use be_valid_asset in your project, add it to your Gemfile:
 gem 'be_valid_asset'
 ```
 
-Alternatively you can install it as a Rails plugin:
-
-```ruby
-./script/plugin install git://github.com/unboxed/be_valid_asset.git
-```
-
-(Warning: This method is not recommended, we strongly encourage you to manage gem dependencies via [Bundler](http://gembundler.com/))
-
 Add the following to `spec/support/be_valid_asset.rb`:
 
 ```ruby
