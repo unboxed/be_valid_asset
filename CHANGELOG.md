@@ -1,3 +1,8 @@
+# 1.3.1
+
+* Avoid dep warnings about using `raise_error` without any arguments
+* Merge #17 to avoid `NameError` (thanks @fcarrega)
+
 # 1.3.0
 
 * Use RSpec 3 for development
