@@ -30,20 +30,6 @@ BeValidAsset::Configuration.cache_path = Rails.root.join('tmp', 'be_valid_asset_
 
 Note: For older versions of RSpec you'll need to require `be_valid_asset.rb` from `spec_helper.rb`.
 
-Note: If you get ``NameError: uninitialized constant RSpec::Core`` when running your specs make the following changes:
-
-In your Gemfile:
-
-```ruby
-gem 'be_valid_asset', require: false
-```
-
-At the top of `spec/support/be_valid_asset.rb`:
-
-```ruby
-require 'be_valid_asset.rb'
-```
-
 ## Usage
 
 ### Markup validation
