@@ -67,7 +67,7 @@ RSpec.describe 'be_valid_css' do
 
       expect {
         expect(css).to be_valid_css
-      }.to raise_error
+      }.to raise_error(RuntimeError, "HTTP error: 503")
     end
 
     it "should mark test as pending if ENV['NONET'] is true" do
@@ -165,7 +165,7 @@ RSpec.describe 'be_valid_css' do
 
       expect {
         expect(css).to be_valid_css
-      }.to raise_error
+      }.to raise_error(RuntimeError, "HTTP error: 503")
       expect(Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size).to eql(count)
     end
 

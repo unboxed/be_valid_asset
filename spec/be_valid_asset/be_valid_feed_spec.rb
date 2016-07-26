@@ -73,7 +73,7 @@ RSpec.describe 'be_valid_feed' do
 
       expect {
         expect(feed).to be_valid_feed
-      }.to raise_error
+      }.to raise_error(RuntimeError, "HTTP error: 503")
     end
 
     it "should mark test as pending if ENV['NONET'] is true" do
@@ -148,7 +148,7 @@ RSpec.describe 'be_valid_feed' do
 
       expect {
         expect(feed).to be_valid_feed
-      }.to raise_error
+      }.to raise_error(RuntimeError, "HTTP error: 503")
       expect(Dir.glob(BeValidAsset::Configuration.cache_path + '/*').size).to eql(count)
     end
 
