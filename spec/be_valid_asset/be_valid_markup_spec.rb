@@ -148,7 +148,7 @@ RSpec.describe 'be_valid_markup' do
       }.to raise_error(SpecFailed)
     end
 
-    it "should fail unless resposne is HTTP OK" do
+    it "should fail unless response is HTTP OK" do
       html = get_file('valid.html')
 
       r = Net::HTTPServiceUnavailable.new('1.1', 503, 'Service Unavailable')
